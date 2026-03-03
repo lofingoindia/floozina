@@ -1,7 +1,7 @@
 <?php
 /**
  * Adobe Console Management SaaS (Single File) - REAL CONNECT (UMAPI + OAuth S2S)
- *
+
  * What this adds:
  * - Admin Console: Test Connection button (token test)
  * - Admin Console: Fetch Product Profiles (UMAPI groups) auto save
@@ -16,7 +16,6 @@
  * - UMAPI Groups/Profiles endpoint.
  * - UMAPI Action commands add/remove/removeFromOrg.
  */
-
 declare(strict_types=1);
 
 function starts_with(string $haystack, string $needle): bool {
