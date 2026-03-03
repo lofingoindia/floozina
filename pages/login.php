@@ -252,6 +252,21 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     pointer-events: none;
   }
 
+  .eye-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #4a6080;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+
   .form-input {
     width: 100%;
     padding: 10px 14px 10px 38px;
@@ -372,7 +387,10 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
           <label class="form-label" for="password"><?= e(t('Password')) ?></label>
           <div class="input-wrap">
             <i class="fas fa-lock"></i>
-            <input class="form-input" type="password" id="password" name="password" required>
+            <input class="form-input" type="password" id="password" name="password" required style="padding-right:38px">
+            <button type="button" class="eye-toggle" id="eyeToggle" tabindex="-1" aria-label="Toggle password visibility">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
           </div>
         </div>
 
@@ -397,6 +415,18 @@ document.getElementById('loginForm').addEventListener('submit', function() {
   const btn = document.getElementById('submitBtn');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?= e(t('Signing In...','جاري تسجيل الدخول...')) ?>';
   btn.disabled = true;
+});
+
+document.getElementById('eyeToggle').addEventListener('click', function() {
+  const input = document.getElementById('password');
+  const icon  = document.getElementById('eyeIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
+  }
 });
 </script>
 
