@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteRule ^status$ index.php?page=status [L,QSA]
+RewriteEngine On
+
+RewriteRule ^superadmin$ index.php?page=login&role=super_admin [L,QSA]
+RewriteRule ^reseller$ index.php?page=login&role=reseller [L,QSA]
