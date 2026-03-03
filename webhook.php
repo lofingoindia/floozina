@@ -13,7 +13,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Must match the "Secret" you set in GitHub → Settings → Webhooks */
-define('WEBHOOK_SECRET', 'REPLACE_WITH_YOUR_STRONG_SECRET');
+define('WEBHOOK_SECRET', 'zQ9!vT7@Lx3#Kp8$Rw2^Md6&Hs4*Ny5%');
 
 /** Absolute path to the repository root on the server */
 define('REPO_PATH', __DIR__);
