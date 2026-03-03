@@ -1,0 +1,8 @@
+# Ignore webhook deploy logs but keep the directory
+logs/*.log
+
+# Common PHP / editor ignores
+.env
+.DS_Store
+Thumbs.db
+*.swp
