@@ -15,7 +15,7 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0f172a;
+    color: #e2e8f0;
     position: relative;
     overflow: hidden;
   }
@@ -118,8 +118,8 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
 
   /* --- Card --- */
   .card {
-    background: #ffffff;
-    border: 1px solid #dde3ed;
+    background: #101f3c;
+    border: 1px solid #1e3360;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: none;
@@ -146,8 +146,8 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
   .brand-icon {
     width: 52px;
     height: 52px;
-    background: #eff6ff;
-    border: none;
+    background: #162448;
+    border: 1px solid #2a4a7f;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -158,20 +158,20 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
 
   .brand-icon i {
     font-size: 22px;
-    color: #2563eb;
+    color: #6098f2;
   }
 
   .brand-title {
     font-size: 20px;
     font-weight: 700;
-    color: #0f172a;
+    color: #f1f5f9;
     letter-spacing: -0.3px;
     margin-bottom: 4px;
   }
 
   .brand-subtitle {
     font-size: 13px;
-    color: #64748b;
+    color: #7d94b5;
     font-weight: 400;
   }
 
@@ -191,15 +191,15 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
   .alert i { margin-top: 1px; flex-shrink: 0; font-size: 13px; }
 
   .alert-success {
-    background: #f0fdf4;
-    border-color: #bbf7d0;
-    color: #166534;
+    background: #0d2b1a;
+    border-color: #1a5c36;
+    color: #4ade80;
   }
 
   .alert-error {
-    background: #fef2f2;
-    border-color: #fecaca;
-    color: #991b1b;
+    background: #2b0d0d;
+    border-color: #7f1d1d;
+    color: #fca5a5;
   }
 
   /* --- Language switcher --- */
@@ -215,9 +215,9 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     padding: 5px 14px;
     font-size: 12px;
     font-weight: 600;
-    color: #475569;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    color: #94b4d8;
+    background: #162448;
+    border: 1px solid #2a4a7f;
     border-radius: 20px;
     text-decoration: none;
     letter-spacing: 0.3px;
@@ -232,7 +232,7 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: #374151;
+    color: #7d94b5;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     margin-bottom: 6px;
@@ -257,16 +257,16 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     padding: 10px 14px 10px 38px;
     font-size: 14px;
     font-family: inherit;
-    color: #0f172a;
-    background: #f8fafc;
-    border: 1.5px solid #dde3ed;
+    color: #e2e8f0;
+    background: #0d1b35;
+    border: 1.5px solid #1e3360;
     border-radius: 7px;
     outline: none;
   }
 
   .form-input:focus {
-    border-color: #2563eb;
-    background: #ffffff;
+    border-color: #3b7cf4;
+    background: #0d1b35;
     box-shadow: none;
     outline: none;
   }
@@ -274,7 +274,7 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
   /* --- Divider --- */
   .form-divider {
     height: 1px;
-    background: #e8edf5;
+    background: #1e3360;
     margin: 22px 0;
   }
 
@@ -305,11 +305,11 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
   /* --- Footer --- */
   .card-footer {
     padding: 14px 40px;
-    background: #f8fafc;
-    border-top: 1px solid #e8edf5;
+    background: #0d1b35;
+    border-top: 1px solid #1e3360;
     text-align: center;
     font-size: 12px;
-    color: #94a3b8;
+    color: #4a6080;
   }
 </style>
 
