@@ -242,7 +242,7 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     position: relative;
   }
 
-  .input-wrap i {
+  .input-wrap > i {
     position: absolute;
     left: 13px;
     top: 50%;
