@@ -1,7 +1,6 @@
 <?php
 /**
  * Adobe Console Management SaaS (Single File) - REAL CONNECT (UMAPI + OAuth S2S)
-
  * What this adds:
  * - Admin Console: Test Connection button (token test)
  * - Admin Console: Fetch Product Profiles (UMAPI groups) auto save
