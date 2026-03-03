@@ -10,18 +10,110 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background-color: #f1f5f9;
+    background-color: #0b1730;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #0f172a;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- Background decorative shapes --- */
+  .bg-shapes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .bg-shape {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  /* Large circle — top right */
+  .bg-s1 {
+    width: 520px;
+    height: 520px;
+    top: -180px;
+    right: -160px;
+    background: #162448;
+    border-radius: 50%;
+  }
+
+  /* Medium circle — bottom left */
+  .bg-s2 {
+    width: 340px;
+    height: 340px;
+    bottom: -110px;
+    left: -90px;
+    background: #162448;
+    border-radius: 50%;
+  }
+
+  /* Small filled square — top left area */
+  .bg-s3 {
+    width: 100px;
+    height: 100px;
+    top: 15%;
+    left: 7%;
+    background: #1e3360;
+    border-radius: 18px;
+    transform: rotate(22deg);
+  }
+
+  /* Tiny circle — centre bottom */
+  .bg-s4 {
+    width: 60px;
+    height: 60px;
+    bottom: 18%;
+    right: 14%;
+    background: #1e3360;
+    border-radius: 50%;
+  }
+
+  /* Outline ring — mid left */
+  .bg-s5 {
+    width: 200px;
+    height: 200px;
+    top: 42%;
+    left: -70px;
+    border: 18px solid #162448;
+    background: transparent;
+    border-radius: 50%;
+  }
+
+  /* Outline ring — top right inner */
+  .bg-s6 {
+    width: 140px;
+    height: 140px;
+    top: 8%;
+    right: 22%;
+    border: 12px solid #162448;
+    background: transparent;
+    border-radius: 50%;
+  }
+
+  /* Thin horizontal bar — decorative line bottom */
+  .bg-bar {
+    position: absolute;
+    width: 180px;
+    height: 4px;
+    bottom: 12%;
+    left: 18%;
+    background: #1e3360;
+    border-radius: 2px;
   }
 
   .page-wrapper {
     width: 100%;
     max-width: 460px;
     padding: 24px 16px;
+    position: relative;
+    z-index: 1;
   }
 
   /* --- Card --- */
@@ -30,6 +122,7 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     border: 1px solid #dde3ed;
     border-radius: 10px;
     overflow: hidden;
+    box-shadow: none;
   }
 
   .card-accent {
@@ -54,12 +147,13 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     width: 52px;
     height: 52px;
     background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    border: none;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 14px;
+    box-shadow: none;
   }
 
   .brand-icon i {
@@ -173,6 +267,8 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
   .form-input:focus {
     border-color: #2563eb;
     background: #ffffff;
+    box-shadow: none;
+    outline: none;
   }
 
   /* --- Divider --- */
@@ -216,6 +312,16 @@ layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
     color: #94a3b8;
   }
 </style>
+
+<div class="bg-shapes">
+  <div class="bg-shape bg-s1"></div>
+  <div class="bg-shape bg-s2"></div>
+  <div class="bg-shape bg-s3"></div>
+  <div class="bg-shape bg-s4"></div>
+  <div class="bg-shape bg-s5"></div>
+  <div class="bg-shape bg-s6"></div>
+  <div class="bg-bar"></div>
+</div>
 
 <div class="page-wrapper">
   <div class="card">
