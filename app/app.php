@@ -19,7 +19,6 @@
 
 declare(strict_types=1);
 
-// Polyfill for PHP < 8
 function starts_with(string $haystack, string $needle): bool {
     return $needle === '' || strncmp($haystack, $needle, strlen($needle)) === 0;
 }
