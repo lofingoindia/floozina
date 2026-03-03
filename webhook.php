@@ -1,7 +1,6 @@
 <?php
 /**
  * GitHub Auto-Deploy Webhook
- *
  * Listens for GitHub push events and runs `git pull` automatically.
  * Secured with HMAC SHA-256 signature validation.
  *
