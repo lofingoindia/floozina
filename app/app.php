@@ -106,22 +106,7 @@ function portal_key(): string {
 ========================== */
 if (!isset($APP_NAME) || $APP_NAME === '') $APP_NAME = "Adobe Console Management";
 if (!isset($SESSION_NAME) || $SESSION_NAME === '') $SESSION_NAME = "adobe_saas_session";
-
-// Detect base path for subdirectory deployments (e.g., /client-demo/floozina/)
-$basePath = '/';
-if (!empty($_SERVER['SCRIPT_NAME'])) {
-    $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\') . '/';
-    if ($basePath === '//') $basePath = '/';
-}
-
 session_name($SESSION_NAME);
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path' => $basePath,
-    'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
 session_start();
 
 /* ==========================

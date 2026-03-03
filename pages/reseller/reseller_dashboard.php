@@ -1,263 +1,40 @@
 <?php
 // META: {"title": "Dashboard", "order": 10, "nav": true, "hidden": false}
+$reseller_id = (int)$_SESSION['user_id'];
 
-// ============================================================
-// TEMPORARY DEBUG SYSTEM - REMOVE AFTER FIXING
-// ============================================================
-$debug_log = [];
-$debug_errors = [];
+// Get user stats
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE reseller_id=?");
+$stmt->execute([$reseller_id]);
+$total_users = (int)$stmt->fetchColumn();
 
-function debug_add($key, $value) {
-    global $debug_log;
-    $debug_log[$key] = $value;
-}
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE reseller_id=? AND expires_at < CURDATE()");
+$stmt->execute([$reseller_id]);
+$expired_users = (int)$stmt->fetchColumn();
 
-function debug_error($msg) {
-    global $debug_errors;
-    $debug_errors[] = $msg;
-}
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE reseller_id=? AND expires_at BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)");
+$stmt->execute([$reseller_id]);
+$expiring_soon = (int)$stmt->fetchColumn();
 
-// Capture all PHP errors
-set_error_handler(function($errno, $errstr, $errfile, $errline) {
-    global $debug_errors;
-    $debug_errors[] = "PHP Error [$errno]: $errstr in $errfile on line $errline";
-    return false;
-});
+// Get recent users
+$stmt = $pdo->prepare("SELECT * FROM users WHERE reseller_id=? ORDER BY created_at DESC LIMIT 5");
+$stmt->execute([$reseller_id]);
+$recent_users = $stmt->fetchAll();
 
-// System Info
-debug_add('PHP Version', phpversion());
-debug_add('Server Software', $_SERVER['SERVER_SOFTWARE'] ?? 'unknown');
-debug_add('Document Root', $_SERVER['DOCUMENT_ROOT'] ?? 'unknown');
-debug_add('Script Name', $_SERVER['SCRIPT_NAME'] ?? 'unknown');
-debug_add('Request URI', $_SERVER['REQUEST_URI'] ?? 'unknown');
-debug_add('HTTP Host', $_SERVER['HTTP_HOST'] ?? 'unknown');
+// Get balance
+$stmt = $pdo->prepare("SELECT balance, monthly_rate FROM resellers WHERE id=?");
+$stmt->execute([$reseller_id]);
+$reseller_data = $stmt->fetch();
+$balance = (float)($reseller_data['balance'] ?? 0);
+$monthly_rate = (float)($reseller_data['monthly_rate'] ?? 1.0);
 
-// Session Info
-debug_add('Session ID', session_id());
-debug_add('Session Name', session_name());
-debug_add('Session Status', session_status() === PHP_SESSION_ACTIVE ? 'ACTIVE' : 'INACTIVE');
-debug_add('Session user_id', $_SESSION['user_id'] ?? 'NOT SET');
-debug_add('Session username', $_SESSION['username'] ?? 'NOT SET');
-debug_add('Session role', $_SESSION['role'] ?? 'NOT SET');
-debug_add('Session is_super_admin', isset($_SESSION['is_super_admin']) ? ($_SESSION['is_super_admin'] ? 'true' : 'false') : 'NOT SET');
-debug_add('Session status', $_SESSION['status'] ?? 'NOT SET');
+// Get recent transactions
+$stmt = $pdo->prepare("SELECT * FROM transactions WHERE reseller_id=? ORDER BY created_at DESC LIMIT 5");
+$stmt->execute([$reseller_id]);
+$recent_transactions = $stmt->fetchAll();
 
-// Cookie Info
-debug_add('Cookies received', !empty($_COOKIE) ? implode(', ', array_keys($_COOKIE)) : 'NONE');
-debug_add('Session cookie path', ini_get('session.cookie_path'));
-
-// Database connection test
-try {
-    $pdo->query("SELECT 1");
-    debug_add('DB Connection', 'OK');
-} catch (Throwable $e) {
-    debug_add('DB Connection', 'FAILED: ' . $e->getMessage());
-    debug_error('Database connection failed: ' . $e->getMessage());
-}
-
-$reseller_id = (int)($_SESSION['user_id'] ?? 0);
-debug_add('Reseller ID', $reseller_id);
-
-if ($reseller_id === 0) {
-    debug_error('CRITICAL: reseller_id is 0 - Session user_id not set!');
-}
-
-// Test each query separately with error catching
-$total_users = 0;
-$expired_users = 0;
-$expiring_soon = 0;
-$recent_users = [];
-$reseller_data = null;
-$balance = 0;
-$monthly_rate = 1.0;
-$recent_transactions = [];
-$announcements = [];
-
-// Query 1: Total users
-try {
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE reseller_id=?");
-    $stmt->execute([$reseller_id]);
-    $total_users = (int)$stmt->fetchColumn();
-    debug_add('Query: Total Users', "OK ($total_users)");
-} catch (Throwable $e) {
-    debug_add('Query: Total Users', 'FAILED');
-    debug_error('Total Users Query: ' . $e->getMessage());
-}
-
-// Query 2: Expired users
-try {
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE reseller_id=? AND expires_at < CURDATE()");
-    $stmt->execute([$reseller_id]);
-    $expired_users = (int)$stmt->fetchColumn();
-    debug_add('Query: Expired Users', "OK ($expired_users)");
-} catch (Throwable $e) {
-    debug_add('Query: Expired Users', 'FAILED');
-    debug_error('Expired Users Query: ' . $e->getMessage());
-}
-
-// Query 3: Expiring soon
-try {
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE reseller_id=? AND expires_at BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)");
-    $stmt->execute([$reseller_id]);
-    $expiring_soon = (int)$stmt->fetchColumn();
-    debug_add('Query: Expiring Soon', "OK ($expiring_soon)");
-} catch (Throwable $e) {
-    debug_add('Query: Expiring Soon', 'FAILED');
-    debug_error('Expiring Soon Query: ' . $e->getMessage());
-}
-
-// Query 4: Recent users
-try {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE reseller_id=? ORDER BY created_at DESC LIMIT 5");
-    $stmt->execute([$reseller_id]);
-    $recent_users = $stmt->fetchAll();
-    debug_add('Query: Recent Users', 'OK (' . count($recent_users) . ' rows)');
-} catch (Throwable $e) {
-    debug_add('Query: Recent Users', 'FAILED');
-    debug_error('Recent Users Query: ' . $e->getMessage());
-}
-
-// Query 5: Reseller balance
-try {
-    $stmt = $pdo->prepare("SELECT balance, monthly_rate FROM resellers WHERE id=?");
-    $stmt->execute([$reseller_id]);
-    $reseller_data = $stmt->fetch();
-    $balance = (float)($reseller_data['balance'] ?? 0);
-    $monthly_rate = (float)($reseller_data['monthly_rate'] ?? 1.0);
-    debug_add('Query: Reseller Data', $reseller_data ? 'OK' : 'NO DATA');
-} catch (Throwable $e) {
-    debug_add('Query: Reseller Data', 'FAILED');
-    debug_error('Reseller Data Query: ' . $e->getMessage());
-}
-
-// Query 6: Recent transactions
-try {
-    $stmt = $pdo->prepare("SELECT * FROM transactions WHERE reseller_id=? ORDER BY created_at DESC LIMIT 5");
-    $stmt->execute([$reseller_id]);
-    $recent_transactions = $stmt->fetchAll();
-    debug_add('Query: Transactions', 'OK (' . count($recent_transactions) . ' rows)');
-} catch (Throwable $e) {
-    debug_add('Query: Transactions', 'FAILED');
-    debug_error('Transactions Query: ' . $e->getMessage());
-}
-
-// Query 7: Announcements
-try {
-    $announcements = get_announcements($pdo, 'reseller');
-    debug_add('Query: Announcements', 'OK (' . count($announcements) . ' rows)');
-} catch (Throwable $e) {
-    debug_add('Query: Announcements', 'FAILED');
-    debug_error('Announcements Query: ' . $e->getMessage());
-}
-
-// Check tables exist
-$tables_to_check = ['users', 'resellers', 'transactions', 'announcements', 'admin_consoles', 'audit_log'];
-foreach ($tables_to_check as $tbl) {
-    try {
-        $pdo->query("SELECT 1 FROM $tbl LIMIT 1");
-        debug_add("Table: $tbl", 'EXISTS');
-    } catch (Throwable $e) {
-        debug_add("Table: $tbl", 'MISSING or ERROR');
-        debug_error("Table '$tbl' check failed: " . $e->getMessage());
-    }
-}
-
-// Restore error handler
-restore_error_handler();
-
-// Build debug output
-$debug_output = "=== FLOOZINA DEBUG LOG ===\n";
-$debug_output .= "Generated: " . date('Y-m-d H:i:s T') . "\n\n";
-
-$debug_output .= "--- SYSTEM INFO ---\n";
-foreach ($debug_log as $k => $v) {
-    $debug_output .= "$k: $v\n";
-}
-
-if (!empty($debug_errors)) {
-    $debug_output .= "\n--- ERRORS FOUND (" . count($debug_errors) . ") ---\n";
-    foreach ($debug_errors as $i => $err) {
-        $debug_output .= ($i + 1) . ". $err\n";
-    }
-} else {
-    $debug_output .= "\n--- NO ERRORS DETECTED ---\n";
-}
-
-$has_errors = !empty($debug_errors);
+// GET ANNOUNCEMENTS FOR RESELLER - CRITICAL FIX
+$announcements = get_announcements($pdo, 'reseller');
 ?>
-
-<!-- DEBUG BOX - TEMPORARY -->
-<div id="debugBox" style="
-    background: <?= $has_errors ? '#2d1b1b' : '#1b2d1b' ?>;
-    border: 2px solid <?= $has_errors ? '#ff4444' : '#44ff44' ?>;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    font-family: 'Consolas', 'Monaco', monospace;
-">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <h3 style="margin:0; color:<?= $has_errors ? '#ff6666' : '#66ff66' ?>;">
-            🔧 DEBUG LOG <?= $has_errors ? '⚠️ ERRORS FOUND' : '✅ ALL OK' ?>
-        </h3>
-        <div>
-            <button onclick="copyDebug()" style="
-                background: #2563eb;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: bold;
-                margin-right: 8px;
-            ">📋 Copy Debug Log</button>
-            <button onclick="document.getElementById('debugBox').style.display='none'" style="
-                background: #666;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 6px;
-                cursor: pointer;
-            ">✕ Hide</button>
-        </div>
-    </div>
-    
-    <pre id="debugContent" style="
-        background: #0a0a0a;
-        color: #00ff00;
-        padding: 15px;
-        border-radius: 8px;
-        overflow-x: auto;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        max-height: 400px;
-        overflow-y: auto;
-        font-size: 12px;
-        line-height: 1.5;
-    "><?= htmlspecialchars($debug_output) ?></pre>
-    
-    <p style="margin:10px 0 0 0; color:#999; font-size:11px;">
-        ⚠️ TEMPORARY DEBUG BOX - Remove after fixing the issue
-    </p>
-</div>
-
-<script>
-function copyDebug() {
-    const text = document.getElementById('debugContent').innerText;
-    navigator.clipboard.writeText(text).then(() => {
-        alert('Debug log copied to clipboard!');
-    }).catch(() => {
-        // Fallback
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        alert('Debug log copied!');
-    });
-}
-</script>
-<!-- END DEBUG BOX -->
 
 <!-- Welcome Section -->
 <div class="card" style="margin-bottom:20px; background:linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)">
