@@ -1,6 +1,7 @@
 <?php
 /**
  * GitHub Auto-Deploy Webhook
+ *
  * Listens for GitHub push events and runs `git pull` automatically.
  * Secured with HMAC SHA-256 signature validation.
  *
@@ -32,7 +33,13 @@ define('LOG_FILE', __DIR__ . '/logs/webhook.log');
 // GitHub publishes its IP ranges at https://api.github.com/meta
 // Uncomment the block below to additionally restrict by IP.
 /*
-
+$allowed_ips = ['192.30.252.0/22', '185.199.108.0/22', '140.82.112.0/20', '143.55.64.0/20'];
+$client_ip   = $_SERVER['REMOTE_ADDR'] ?? '';
+if (!ip_in_cidrs($client_ip, $allowed_ips)) {
+    http_response_code(403);
+    exit('Forbidden');
+}
+*/
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN HANDLER
