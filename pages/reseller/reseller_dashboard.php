@@ -139,9 +139,9 @@ $ann_icons = [
     gap: 8px;
     padding: 16px 10px;
     background: var(--surface-2);
-    border: 1px solid var(--border-2);
+    border: 1px solid var(--border-1);
     border-radius: var(--r-lg);
-    color: var(--text-2);
+    color: var(--text-1);
     font-size: 12px;
     font-weight: 600;
     text-align: center;
@@ -151,7 +151,7 @@ $ann_icons = [
   }
   .qa-btn:hover {
     background: var(--brand-glow);
-    border-color: rgba(99,102,241,.3);
+    border-color: rgba(99,102,241,.4);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     color: var(--brand-hover);
@@ -159,21 +159,21 @@ $ann_icons = [
   .qa-icon {
     width: 36px; height: 36px;
     border-radius: var(--r);
-    background: var(--surface-3);
+    background: var(--brand-glow);
     display: flex; align-items: center; justify-content: center;
-    color: var(--text-2);
+    color: var(--brand-hover);
     transition: background var(--t), color var(--t);
   }
-  .qa-btn:hover .qa-icon { background: rgba(99,102,241,.15); color: var(--brand-hover); }
+  .qa-btn:hover .qa-icon { background: rgba(99,102,241,.25); color: var(--brand-hover); }
   .qa-icon svg { width: 18px; height: 18px; stroke: currentColor; }
 
   /* KPI icon override for SVG */
   .kpi-icon {
     width: 38px; height: 38px;
     border-radius: var(--r);
-    background: var(--surface-3);
+    background: var(--brand-glow);
     display: flex; align-items: center; justify-content: center;
-    color: var(--text-3);
+    color: var(--brand-hover);
   }
   .kpi-icon svg { width: 20px; height: 20px; stroke: currentColor; }
 
@@ -195,7 +195,7 @@ $ann_icons = [
     align-items: center;
     gap: 8px;
   }
-  .section-title svg { color: var(--text-3); }
+  .section-title svg { color: var(--text-2); }
 
   /* Table inside card */
   .table-wrap { overflow-x: auto; border-radius: var(--r); }
@@ -228,10 +228,11 @@ $ann_icons = [
     color: #fff;
     letter-spacing: .06em;
   }
+  .ann-icon { display: flex; align-items: center; color: inherit; }
   .ann-icon svg { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; }
   .ann-title { font-size: 13px; font-weight: 600; color: var(--text-1); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .ann-meta  { font-size: 11px; color: var(--text-3); margin-top: 6px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-  .ann-meta svg { width: 12px; height: 12px; stroke: currentColor; flex-shrink: 0; }
+  .ann-meta  { font-size: 11px; color: var(--text-2); margin-top: 6px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .ann-meta svg { width: 12px; height: 12px; stroke: currentColor; flex-shrink: 0; color: var(--text-2); }
   .ann-meta-item { display: flex; align-items: center; gap: 4px; }
   .ann-body  { font-size: 12px; color: var(--text-2); margin-top: 8px; line-height: 1.6; white-space: pre-wrap; }
 

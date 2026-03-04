@@ -3709,7 +3709,7 @@ function layout_header(string $title, ?string $flash_success, ?string $flash_err
       gap: 10px;
       padding: 9px 11px;
       border-radius: var(--r);
-      color: var(--text-2);
+      color: var(--text-1);
       font-size: 13px;
       font-weight: 500;
       white-space: nowrap;
