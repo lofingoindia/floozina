@@ -3728,11 +3728,19 @@ function layout_header(string $title, ?string $flash_success, ?string $flash_err
       font-weight: 600;
     }
     .nav-item-icon {
-      font-size: 16px;
       width: 20px;
-      text-align: center;
+      height: 20px;
       flex-shrink: 0;
-      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
+    .nav-item-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      flex-shrink: 0;
     }
     .nav-label { flex: 1; transition: opacity var(--t); }
     /* Legacy nav-dot – hidden in new design, but kept so old pages don't break */
@@ -4270,24 +4278,27 @@ function layout_header(string $title, ?string $flash_success, ?string $flash_err
 </head>
 <body class="<?= is_rtl() ? 'rtl' : '' ?>" data-theme="dark">
 <?php
-// Nav icon map for sidebar
+// Nav icon map for sidebar — Lucide outline SVGs
+$_ic = fn(string $p): string => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'.$p.'</svg>';
 $navIcons = [
-  'admin_dashboard'     => '&#9783;',
-  'admin_users'         => '&#128101;',
-  'admin_resellers'     => '&#127978;',
-  'admin_consoles'      => '&#128421;',
-  'admin_transactions'  => '&#128179;',
-  'admin_logs'          => '&#128204;',
-  'admin_announcements' => '&#128226;',
-  'admin_migration'     => '&#8635;',
-  'reseller_dashboard'     => '&#9783;',
-  'reseller_users'         => '&#128101;',
-  'reseller_assign'        => '&#43;',
-  'reseller_bulk_assign'   => '&#128230;',
-  'reseller_bulk_delete'   => '&#128465;',
-  'reseller_bulk_history'  => '&#128196;',
-  'reseller_billing'       => '&#128176;',
-  'reseller_announcements' => '&#128226;',
+  // Admin pages
+  'admin_dashboard'     => $_ic('<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>'),
+  'admin_users'         => $_ic('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
+  'admin_resellers'     => $_ic('<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>'),
+  'admin_consoles'      => $_ic('<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/>'),
+  'admin_transactions'  => $_ic('<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>'),
+  'admin_logs'          => $_ic('<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>'),
+  'admin_announcements' => $_ic('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'),
+  'admin_migration'     => $_ic('<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>'),
+  // Reseller pages
+  'reseller_dashboard'     => $_ic('<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>'),
+  'reseller_users'         => $_ic('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
+  'reseller_assign'        => $_ic('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>'),
+  'reseller_bulk_assign'   => $_ic('<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>'),
+  'reseller_bulk_delete'   => $_ic('<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>'),
+  'reseller_bulk_history'  => $_ic('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>'),
+  'reseller_billing'       => $_ic('<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>'),
+  'reseller_announcements' => $_ic('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'),
 ];
 ?>
 <?php if ($isShell): ?>
@@ -4297,7 +4308,7 @@ $navIcons = [
   <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
 
     <!-- Collapse toggle (desktop/tablet) -->
-    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Toggle sidebar" aria-label="Toggle sidebar">&#8249;</button>
+    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Toggle sidebar" aria-label="Toggle sidebar"><?= $_ic('<path d="m15 18-6-6 6-6"/>') ?></button>
 
     <!-- Brand -->
     <div class="brand">
@@ -4314,7 +4325,7 @@ $navIcons = [
         <div class="nav-section-label"><?= e(t('Main Menu')) ?></div>
         <nav class="nav" role="navigation" aria-label="Main navigation">
           <?php foreach ($nav as $k => $label):
-            $icon = $navIcons[$k] ?? '&#8226;';
+            $icon = $navIcons[$k] ?? $_ic('<circle cx="12" cy="12" r="5"/>');
           ?>
             <a class="nav-item <?= ($k === $active ? 'active' : '') ?>" href="?page=<?= e($k) ?>" title="<?= e(t_page_label((string)$k, (string)$label)) ?>">
               <span class="nav-item-icon" aria-hidden="true"><?= $icon ?></span>
