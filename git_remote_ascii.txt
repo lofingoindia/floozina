@@ -1,2 +1,0 @@
-origin	https://github.com/lofingoindia/floozina (fetch)
-origin	https://github.com/lofingoindia/floozina (push)
