@@ -1,0 +1,18 @@
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   git_branch_ascii.txt
+	new file:   git_branches_all_ascii.txt
+	new file:   git_diff_ascii.txt
+	new file:   git_log_recent_ascii.txt
+	new file:   git_log_unpushed_ascii.txt
+	new file:   git_out.txt
+	new file:   git_remote_ascii.txt
+	new file:   git_status_ascii.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	git_status_after_add.txt
+
