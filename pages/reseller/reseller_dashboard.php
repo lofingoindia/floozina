@@ -1056,6 +1056,32 @@ $announcements = get_announcements($pdo, 'reseller');
             </div>
         </div>
 
+        <!-- Order Analytics (Usage Specs) -->
+        <h3 class="md-section-title">Overview Stats</h3>
+        <div class="md-analytics">
+            <div class="md-stat-box md-stat-box-1">
+                <div class="md-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div class="md-stat-bottom">
+                    <div class="md-stat-num"><?= $total_users - $expired_users ?></div>
+                    <div class="md-stat-text">Active Users</div>
+                </div>
+            </div>
+            <div class="md-stat-box md-stat-box-2">
+                <div class="md-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                <div class="md-stat-bottom">
+                    <div class="md-stat-num"><?= $expiring_soon ?></div>
+                    <div class="md-stat-text">Expiring Soon</div>
+                </div>
+            </div>
+            <div class="md-stat-box md-stat-box-3">
+                <div class="md-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
+                <div class="md-stat-bottom">
+                    <div class="md-stat-num">$<?= money_fmt($total_users * $monthly_rate) ?></div>
+                    <div class="md-stat-text">Monthly Cost</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Recent Users (Top Selling Items style) -->
         <h3 class="md-section-title">Recent Users</h3>
         <div class="md-h-scroll">
@@ -1083,32 +1109,6 @@ $announcements = get_announcements($pdo, 'reseller');
             <?php if(empty($recent_users)): ?>
                 <div style="padding: 20px; text-align: center; width: 100%; color: #999;">No recent users</div>
             <?php endif; ?>
-        </div>
-
-        <!-- Order Analytics (Usage Specs) -->
-        <h3 class="md-section-title">Overview Stats</h3>
-        <div class="md-analytics">
-            <div class="md-stat-box md-stat-box-1">
-                <div class="md-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-                <div class="md-stat-bottom">
-                    <div class="md-stat-num"><?= $total_users - $expired_users ?></div>
-                    <div class="md-stat-text">Active Users</div>
-                </div>
-            </div>
-            <div class="md-stat-box md-stat-box-2">
-                <div class="md-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-                <div class="md-stat-bottom">
-                    <div class="md-stat-num"><?= $expiring_soon ?></div>
-                    <div class="md-stat-text">Expiring Soon</div>
-                </div>
-            </div>
-            <div class="md-stat-box md-stat-box-3">
-                <div class="md-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
-                <div class="md-stat-bottom">
-                    <div class="md-stat-num">$<?= money_fmt($total_users * $monthly_rate) ?></div>
-                    <div class="md-stat-text">Monthly Cost</div>
-                </div>
-            </div>
         </div>
 
         <!-- Table Performance (Recent Transactions) -->
