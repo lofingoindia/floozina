@@ -36,271 +36,403 @@ $recent_transactions = $stmt->fetchAll();
 $announcements = get_announcements($pdo, 'reseller');
 ?>
 
-<!-- Welcome Section -->
-<div class="card" style="margin-bottom:20px; background:linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)">
-    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:15px">
-        <div>
-            <h2 style="margin:0 0 5px 0">Welcome back, <?= e($_SESSION['username']) ?>! 👋</h2>
-            <p class="muted"><?= date('l, F j, Y') ?></p>
-        </div>
-        <div class="inline">
-            <span class="badge <?= $balance >= 0 ? 'b-success' : 'b-danger' ?>">
-                Balance: $<?= money_fmt($balance) ?>
-            </span>
-            <span class="badge b-info">Rate: $<?= money_fmt($monthly_rate) ?>/mo</span>
-        </div>
-    </div>
-</div>
-
-<!-- ANNOUNCEMENTS SECTION - MOVED TO TOP FOR VISIBILITY -->
-<?php if (!empty($announcements)): ?>
-<div class="card" style="margin-bottom:20px; border-left:4px solid #93c5fd; background:rgba(147,197,253,0.05)">
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px">
-        <span style="font-size:24px">📢</span>
-        <h3 style="margin:0">Announcements & Updates</h3>
-        <span class="badge b-info"><?= count($announcements) ?> new</span>
-    </div>
+<style>
+/* Premium Dashboard Styles */
+.premium-dashboard {
+    --bg-main: transparent;
+    --card-bg: #0F141E;
+    --card-border: rgba(255, 255, 255, 0.05);
+    --text-main: #E2E8F0;
+    --text-muted: #94A3B8;
+    --accent-blue: #3B82F6;
+    --accent-blue-glow: rgba(59, 130, 246, 0.15);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
-    <div style="display:flex; flex-direction:column; gap:12px">
-        <?php foreach (array_slice($announcements, 0, 3) as $a): 
-            $badge = 'b-info';
-            $icon = 'ℹ️';
-            $border_color = '#93c5fd';
-            $bg_color = 'rgba(147,197,253,0.03)';
-            
-            if ($a['type'] === 'success') {
-                $badge = 'b-success';
-                $icon = '✅';
-                $border_color = '#4ade80';
-                $bg_color = 'rgba(74,222,128,0.03)';
-            } elseif ($a['type'] === 'warning') {
-                $badge = 'b-warning';
-                $icon = '⚠️';
-                $border_color = '#f6c177';
-                $bg_color = 'rgba(246,193,119,0.03)';
-            } elseif ($a['type'] === 'danger') {
-                $badge = 'b-danger';
-                $icon = '🚨';
-                $border_color = '#ff4d4d';
-                $bg_color = 'rgba(255,77,77,0.03)';
-            }
-            
-            // Check if new (less than 2 days old)
-            $is_new = (time() - strtotime($a['created_at'])) < (2 * 24 * 60 * 60);
-        ?>
-            <div style="padding:15px; background:<?= $bg_color ?>; border-radius:12px; border-left:3px solid <?= $border_color ?>; position:relative">
-                <?php if ($is_new): ?>
-                    <span style="position:absolute; top:-8px; right:15px; background:<?= $border_color ?>; color:#000; padding:2px 10px; border-radius:20px; font-size:10px; font-weight:bold">NEW</span>
-                <?php endif; ?>
-                
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
-                    <span style="font-size:20px"><?= $icon ?></span>
-                    <b><?= e($a['title']) ?></b>
-                    <span class="badge <?= $badge ?>" style="font-size:10px"><?= e($a['type']) ?></span>
-                </div>
-                
-                <div style="margin-left:28px; color:var(--text); white-space:pre-wrap; line-height:1.5">
-                    <?= e(substr($a['content'], 0, 200)) ?><?= strlen($a['content']) > 200 ? '...' : '' ?>
-                </div>
-                
-                <div style="margin-top:8px; margin-left:28px; display:flex; align-items:center; gap:15px; font-size:11px; color:var(--muted2)">
-                    <span>📅 <?= date('M j, Y', strtotime($a['created_at'])) ?></span>
-                    <span>⏱️ <?= time_elapsed_string($a['created_at']) ?></span>
-                    <?php if (!empty($a['expires_at'])): ?>
-                        <span>⏰ Expires <?= date('M j', strtotime($a['expires_at'])) ?></span>
-                    <?php endif; ?>
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.premium-dashboard .premium-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease backwards;
+    margin-bottom: 24px;
+}
+
+.premium-dashboard .premium-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+
+.premium-dashboard .flex-between { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+.premium-dashboard .flex-center { display: flex; align-items: center; gap: 10px; }
+
+/* Status Badges */
+.premium-dashboard .status-badge {
+    padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border: 1px solid transparent;
+}
+.b-glow-blue { background: rgba(59, 130, 246, 0.1); color: #60A5FA; border-color: rgba(59, 130, 246, 0.2); }
+.b-glow-green { background: rgba(74, 222, 128, 0.1); color: #4ADE80; border-color: rgba(74, 222, 128, 0.2); }
+.b-glow-red { background: rgba(248, 113, 113, 0.1); color: #F87171; border-color: rgba(248, 113, 113, 0.2); }
+.b-glow-yellow { background: rgba(250, 204, 21, 0.1); color: #FACC15; border-color: rgba(250, 204, 21, 0.2); }
+
+/* Typography */
+.premium-dashboard .text-muted { color: var(--text-muted); font-size: 14px; }
+.premium-dashboard h2, .premium-dashboard h3 { margin: 0; font-weight: 700; color: #FFFFFF; }
+.premium-dashboard .gradient-text {
+    background: linear-gradient(90deg, #FFFFFF, #A5B4FC);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* Stats */
+.premium-dashboard .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px; }
+.premium-dashboard .stat-icon {
+    width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+}
+.premium-dashboard .stat-val { font-size: 32px; font-weight: 700; margin: 4px 0 0 0; line-height: 1.2; }
+
+/* Grid Layout */
+.premium-dashboard .split-row { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+@media(min-width: 900px) { .premium-dashboard .split-row { grid-template-columns: 1fr 1fr; } }
+
+/* Buttons */
+.premium-dashboard .action-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 14px;
+    border-radius: var(--radius-md); color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 14px; transition: var(--transition);
+}
+.premium-dashboard .action-btn:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); box-shadow: 0 4px 15px var(--accent-blue-glow); color: #fff; }
+.premium-dashboard .btn-small { padding: 8px 16px; font-size: 13px; border-radius: 20px; background: rgba(255,255,255,0.05); }
+
+/* Tables */
+.premium-dashboard table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.premium-dashboard th, .premium-dashboard td { padding: 16px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; }
+.premium-dashboard th { background: rgba(0,0,0,0.2); font-size: 12px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
+.premium-dashboard th:first-child, .premium-dashboard td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.premium-dashboard th:last-child, .premium-dashboard td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+.premium-dashboard tbody tr { transition: var(--transition); }
+.premium-dashboard tbody tr:hover td { background: rgba(255,255,255,0.02); }
+.premium-dashboard tbody tr:last-child td { border-bottom: none; }
+
+/* Announcements */
+.premium-dashboard .announcement-card {
+    padding: 16px 20px; border-radius: var(--radius-md); position: relative;
+    border: 1px solid transparent; margin-bottom: 12px; transition: var(--transition);
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+.premium-dashboard .announcement-card:hover { transform: translateX(5px); background: rgba(255,255,255,0.04); }
+.premium-dashboard .a-new { position: absolute; top: -8px; right: 16px; background: #3B82F6; color: #fff; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
+
+.a-info { border-left: 3px solid #60A5FA; }
+.a-success { border-left: 3px solid #4ADE80; }
+.a-warning { border-left: 3px solid #FACC15; }
+.a-danger { border-left: 3px solid #F87171; }
+</style>
+
+<div class="premium-dashboard">
+
+    <!-- Welcome Section -->
+    <div class="premium-card delay-1" style="background: linear-gradient(135deg, rgba(20,25,38,0.9) 0%, rgba(10,14,23,0.95) 100%); border-color: rgba(59,130,246,0.2); box-shadow: 0 8px 32px var(--accent-blue-glow);">
+        <div class="flex-between">
+            <div>
+                <h2 class="gradient-text" style="font-size: 28px; margin-bottom: 6px;">Welcome back, <?= e($_SESSION['username']) ?>! 👋</h2>
+                <div class="text-muted" style="display:flex; align-items:center; gap:8px;">
+                    <span style="display:inline-block; width:8px; height:8px; background:#4ADE80; border-radius:50%; box-shadow:0 0 10px rgba(74,222,128,0.5);"></span>
+                    <?= date('l, F j, Y') ?>
                 </div>
             </div>
-        <?php endforeach; ?>
+            <div class="flex-center">
+                <span class="status-badge <?= $balance >= 0 ? 'b-glow-green' : 'b-glow-red' ?>" style="font-size: 14px; padding: 10px 16px;">
+                    <span style="font-size: 16px;">💰</span> Balance: $<?= money_fmt($balance) ?>
+                </span>
+                <span class="status-badge b-glow-blue" style="font-size: 14px; padding: 10px 16px;">
+                    <span style="font-size: 16px;">📈</span> Rate: $<?= money_fmt($monthly_rate) ?>/mo
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcements -->
+    <?php if (!empty($announcements)): ?>
+    <div class="premium-card delay-1">
+        <div class="flex-between" style="margin-bottom: 20px;">
+            <div class="flex-center">
+                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #60A5FA;">📢</div>
+                <h3 style="font-size: 20px;">Announcements & Updates</h3>
+            </div>
+            <span class="status-badge b-glow-blue"><?= count($announcements) ?> New</span>
+        </div>
         
-        <?php if (count($announcements) > 3): ?>
-        <a href="?page=reseller_announcements" class="btn btn-small" style="align-self:flex-end; margin-top:5px">
-            View all <?= count($announcements) ?> announcements →
-        </a>
-        <?php endif; ?>
-    </div>
-</div>
-<?php else: ?>
-<!-- Show empty state if no announcements -->
-<div class="card" style="margin-bottom:20px; background:rgba(255,255,255,0.02); border:1px dashed var(--border2)">
-    <div style="display:flex; align-items:center; gap:15px; padding:10px">
-        <span style="font-size:24px; opacity:0.5">📪</span>
         <div>
-            <p style="margin:0">No announcements at this time. Check back later!</p>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
-
-<!-- Stats Grid -->
-<div class="row stats" style="margin-bottom:20px">
-    <div class="col card" style="padding:20px">
-        <div style="display:flex; align-items:center; gap:15px">
-            <div style="font-size:32px">👥</div>
-            <div>
-                <div style="font-size:28px; font-weight:bold"><?= $total_users ?></div>
-                <div class="muted">Total Users</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col card" style="padding:20px">
-        <div style="display:flex; align-items:center; gap:15px">
-            <div style="font-size:32px">⚠️</div>
-            <div>
-                <div style="font-size:28px; font-weight:bold; color:#f6c177"><?= $expiring_soon ?></div>
-                <div class="muted">Expiring Soon</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col card" style="padding:20px">
-        <div style="display:flex; align-items:center; gap:15px">
-            <div style="font-size:32px">❌</div>
-            <div>
-                <div style="font-size:28px; font-weight:bold; color:#ff4d4d"><?= $expired_users ?></div>
-                <div class="muted">Expired</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col card" style="padding:20px">
-        <div style="display:flex; align-items:center; gap:15px">
-            <div style="font-size:32px">💰</div>
-            <div>
-                <div style="font-size:28px; font-weight:bold; color:<?= $balance >= 0 ? '#4ade80' : '#ff4d4d' ?>">
-                    $<?= money_fmt($balance) ?>
-                </div>
-                <div class="muted">Current Balance</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Quick Actions and Recent Users -->
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <h3>⚡ Quick Actions</h3>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:10px; margin-top:15px">
-                <a href="?page=reseller_assign" class="btn" style="justify-content:flex-start">
-                    <span style="margin-right:8px">➕</span> Assign User
-                </a>
-                <a href="?page=reseller_bulk_assign" class="btn" style="justify-content:flex-start">
-                    <span style="margin-right:8px">📦</span> Bulk Assign
-                </a>
-                <a href="?page=reseller_users" class="btn" style="justify-content:flex-start">
-                    <span style="margin-right:8px">👥</span> View Users
-                </a>
-                <a href="?page=reseller_billing" class="btn" style="justify-content:flex-start">
-                    <span style="margin-right:8px">💳</span> Billing
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col">
-        <div class="card">
-            <h3>📊 Usage Overview</h3>
-            <div style="margin-top:15px">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px">
-                    <span>Active Users</span>
-                    <span style="color:#4ade80; font-weight:bold"><?= $total_users - $expired_users ?></span>
-                </div>
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px">
-                    <span>Monthly Rate</span>
-                    <span style="color:#93c5fd; font-weight:bold">$<?= money_fmt($monthly_rate) ?></span>
-                </div>
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px">
-                    <span>Est. Monthly Cost</span>
-                    <span style="color:#f6c177; font-weight:bold">$<?= money_fmt($total_users * $monthly_rate) ?></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Recent Users -->
-<div class="card">
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:15px">
-        <h3 style="margin:0">🕒 Recent Users</h3>
-        <a href="?page=reseller_users" class="btn btn-small">View All →</a>
-    </div>
-    
-    <div style="overflow-x:auto">
-        <table>
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Profile</th>
-                    <th>Expires</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($recent_users as $u): 
-                    $today = date('Y-m-d');
-                    $status_class = 'b-success';
-                    $status_text = 'Active';
+            <?php foreach (array_slice($announcements, 0, 3) as $a): 
+                $a_class = 'a-info';
+                $badge = 'b-glow-blue';
+                $icon = 'ℹ️';
+                
+                if ($a['type'] === 'success') { $badge = 'b-glow-green'; $icon = '✅'; $a_class = 'a-success'; }
+                elseif ($a['type'] === 'warning') { $badge = 'b-glow-yellow'; $icon = '⚠️'; $a_class = 'a-warning'; }
+                elseif ($a['type'] === 'danger') { $badge = 'b-glow-red'; $icon = '🚨'; $a_class = 'a-danger'; }
+                
+                $is_new = (time() - strtotime($a['created_at'])) < (2 * 24 * 60 * 60);
+            ?>
+                <div class="announcement-card <?= $a_class ?>">
+                    <?php if ($is_new): ?>
+                        <span class="a-new">NEW</span>
+                    <?php endif; ?>
                     
-                    if (!empty($u['expires_at']) && $u['expires_at'] < $today) {
-                        $status_class = 'b-danger';
-                        $status_text = 'Expired';
-                    } elseif (!empty($u['expires_at']) && $u['expires_at'] <= date('Y-m-d', strtotime('+7 days'))) {
-                        $status_class = 'b-warning';
-                        $status_text = 'Expiring Soon';
-                    }
-                ?>
-                <tr>
-                    <td><?= e($u['email']) ?></td>
-                    <td><?= e($u['product_profile'] ?: 'N/A') ?></td>
-                    <td><?= e($u['expires_at'] ?: 'N/A') ?></td>
-                    <td><span class="badge <?= $status_class ?>"><?= $status_text ?></span></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                    <div class="flex-center" style="margin-bottom: 8px;">
+                        <span style="font-size:18px"><?= $icon ?></span>
+                        <b style="font-size: 15px; color: #FFFFFF;"><?= e($a['title']) ?></b>
+                        <span class="status-badge <?= $badge ?>" style="font-size:10px; padding: 2px 8px;"><?= e($a['type']) ?></span>
+                    </div>
+                    
+                    <div style="margin-left: 28px; line-height: 1.6; font-size: 14px; color: var(--text-main); opacity: 0.9; margin-bottom: 12px; white-space: pre-wrap;">
+                        <?= e(substr($a['content'], 0, 200)) ?><?= strlen($a['content']) > 200 ? '...' : '' ?>
+                    </div>
+                    
+                    <div class="text-muted" style="margin-left: 28px; display:flex; gap:16px; font-size:12px;">
+                        <span class="flex-center" style="gap:4px">📅 <?= date('M j, Y', strtotime($a['created_at'])) ?></span>
+                        <span class="flex-center" style="gap:4px">⏱️ <?= time_elapsed_string($a['created_at']) ?></span>
+                        <?php if (!empty($a['expires_at'])): ?>
+                            <span class="flex-center" style="gap:4px; color:#F87171">⏰ Expires <?= date('M j', strtotime($a['expires_at'])) ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            
+            <?php if (count($announcements) > 3): ?>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="?page=reseller_announcements" class="action-btn" style="display: inline-flex; background: transparent; border-color: transparent; color: #60A5FA;">
+                    View all <?= count($announcements) ?> announcements →
+                </a>
+            </div>
+            <?php endif; ?>
+        </div>
     </div>
-</div>
+    <?php else: ?>
+    <div class="premium-card delay-1" style="border: 1px dashed rgba(255,255,255,0.1); background: transparent; box-shadow: none;">
+        <div class="flex-center" style="justify-content: center; padding: 20px; color: var(--text-muted);">
+            <span style="font-size:24px; opacity:0.5">📪</span>
+            <p style="margin:0; font-size: 15px;">No announcements at this time. Check back later!</p>
+        </div>
+    </div>
+    <?php endif; ?>
 
-<!-- Recent Transactions -->
-<div class="card">
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:15px">
-        <h3 style="margin:0">💰 Recent Transactions</h3>
-        <a href="?page=reseller_billing" class="btn btn-small">View All →</a>
+    <!-- Stats Grid -->
+    <div class="stats-grid delay-2">
+        <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: #A5B4FC; background: rgba(165, 180, 252, 0.1); border-color: rgba(165, 180, 252, 0.2);">👥</div>
+                <div>
+                    <div class="stat-val"><?= $total_users ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Total Users</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: #FBBF24; background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2);">⚠️</div>
+                <div>
+                    <div class="stat-val" style="color: #FBBF24; font-size: 28px;"><?= $expiring_soon ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Expiring Soon</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: #F87171; background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2);">❌</div>
+                <div>
+                    <div class="stat-val" style="color: #F87171; font-size: 28px;"><?= $expired_users ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Expired</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; background: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)' ?>; border-color: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.2)' : 'rgba(248, 113, 113, 0.2)' ?>;">💰</div>
+                <div>
+                    <div class="stat-val" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; font-size: 26px;">$<?= money_fmt($balance) ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Current Balance</div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <div style="overflow-x:auto">
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($recent_transactions as $t): ?>
-                <tr>
-                    <td><?= e(date('M j, H:i', strtotime($t['created_at']))) ?></td>
-                    <td>
-                        <span class="badge <?= 
-                            $t['type'] === 'payment' ? 'b-success' : 
-                            ($t['type'] === 'charge' ? 'b-warning' : 'b-info') 
-                        ?>">
-                            <?= e($t['type']) ?>
-                        </span>
-                    </td>
-                    <td><?= e($t['description']) ?></td>
-                    <td style="color:<?= $t['type'] === 'payment' ? '#4ade80' : '#ff4d4d' ?>">
-                        <?= $t['type'] === 'payment' ? '+' : '-' ?> $<?= money_fmt($t['amount']) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+
+    <!-- Quick Actions and Overview Split -->
+    <div class="split-row delay-3">
+        <div class="premium-card" style="margin-bottom: 0; min-height: 100%;">
+            <div class="flex-center" style="margin-bottom: 20px;">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(250, 204, 21, 0.1); color: #FBBF24; border-color: rgba(250, 204, 21, 0.2);">⚡</div>
+                <h3 style="font-size: 18px;">Quick Actions</h3>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px;">
+                <a href="?page=reseller_assign" class="action-btn">
+                    <span style="font-size: 16px;">➕</span> Assign User
+                </a>
+                <a href="?page=reseller_bulk_assign" class="action-btn">
+                    <span style="font-size: 16px;">📦</span> Bulk Assign
+                </a>
+                <a href="?page=reseller_users" class="action-btn">
+                    <span style="font-size: 16px;">👥</span> View Users
+                </a>
+                <a href="?page=reseller_billing" class="action-btn">
+                    <span style="font-size: 16px;">💳</span> Billing
+                </a>
+            </div>
+        </div>
+        
+        <div class="premium-card" style="margin-bottom: 0; min-height: 100%; position: relative;">
+            <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+            
+            <div class="flex-center" style="margin-bottom: 20px;">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(16, 185, 129, 0.1); color: #34D399; border-color: rgba(16, 185, 129, 0.2);">📊</div>
+                <h3 style="font-size: 18px;">Usage Overview</h3>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <span class="text-muted" style="font-weight: 500;">Active Users</span>
+                    <span style="color:#4ADE80; font-weight:700; font-size: 16px;"><?= $total_users - $expired_users ?> <span style="font-size:12px; opacity:0.6; font-weight:normal;">/ <?= $total_users ?></span></span>
+                </div>
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: -6px; margin-bottom: 6px;">
+                    <div style="width: <?= $total_users > 0 ? (($total_users - $expired_users)/$total_users)*100 : 0 ?>%; height: 100%; background: linear-gradient(90deg, #34D399, #10B981); border-radius: 10px; box-shadow: 0 0 10px rgba(52,211,153,0.5);"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <span class="text-muted" style="font-weight: 500;">Monthly Rate</span>
+                    <span style="color:#60A5FA; font-weight:700; font-size: 16px;">$<?= money_fmt($monthly_rate) ?></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: linear-gradient(90deg, rgba(251, 191, 36, 0.1), transparent); border-radius: 12px; border-left: 2px solid #FBBF24;">
+                    <span style="font-weight: 600; color: #FBBF24;">Est. Monthly Cost</span>
+                    <span style="color:#FBBF24; font-weight:800; font-size: 18px;">$<?= money_fmt($total_users * $monthly_rate) ?></span>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Recent Users Table -->
+    <div class="premium-card delay-4">
+        <div class="flex-between" style="margin-bottom: 20px;">
+            <div class="flex-center">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(165, 180, 252, 0.1); color: #A5B4FC;">🕒</div>
+                <h3 style="font-size: 18px;">Recent Users</h3>
+            </div>
+            <a href="?page=reseller_users" class="action-btn btn-small">View All →</a>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Profile</th>
+                        <th>Expires</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($recent_users as $u): 
+                        $today = date('Y-m-d');
+                        $status_class = 'b-glow-green';
+                        $status_text = 'Active';
+                        
+                        if (!empty($u['expires_at']) && $u['expires_at'] < $today) {
+                            $status_class = 'b-glow-red';
+                            $status_text = 'Expired';
+                        } elseif (!empty($u['expires_at']) && $u['expires_at'] <= date('Y-m-d', strtotime('+7 days'))) {
+                            $status_class = 'b-glow-yellow';
+                            $status_text = 'Expiring Soon';
+                        }
+                    ?>
+                    <tr>
+                        <td style="font-weight: 500; color: #fff;"><?= e($u['email']) ?></td>
+                        <td class="text-muted"><?= e($u['product_profile'] ?: 'N/A') ?></td>
+                        <td class="text-muted"><?= e($u['expires_at'] ?: 'N/A') ?></td>
+                        <td><span class="status-badge <?= $status_class ?>"><?= $status_text ?></span></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if(empty($recent_users)): ?>
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">No users found.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Transactions Table -->
+    <div class="premium-card delay-4">
+        <div class="flex-between" style="margin-bottom: 20px;">
+            <div class="flex-center">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(96, 165, 250, 0.1); color: #60A5FA;">💰</div>
+                <h3 style="font-size: 18px;">Recent Transactions</h3>
+            </div>
+            <a href="?page=reseller_billing" class="action-btn btn-small">View All →</a>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($recent_transactions as $t): ?>
+                    <tr>
+                        <td class="text-muted"><?= e(date('M j, Y • H:i', strtotime($t['created_at']))) ?></td>
+                        <td>
+                            <span class="status-badge <?= 
+                                $t['type'] === 'payment' ? 'b-glow-green' : 
+                                ($t['type'] === 'charge' ? 'b-glow-yellow' : 'b-glow-blue') 
+                            ?>">
+                                <?= e(ucfirst($t['type'])) ?>
+                            </span>
+                        </td>
+                        <td class="text-muted"><?= e($t['description']) ?></td>
+                        <td style="text-align: right; font-weight: 700; color:<?= $t['type'] === 'payment' ? '#4ADE80' : '#F87171' ?>">
+                            <?= $t['type'] === 'payment' ? '+' : '-' ?> $<?= money_fmt($t['amount']) ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if(empty($recent_transactions)): ?>
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">No recent transactions.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <!-- Helper function for time elapsed -->
