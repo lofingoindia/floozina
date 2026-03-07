@@ -31,19 +31,19 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
 
     // Check refund window
     $until = (string)($u['refund_eligible_until'] ?? '');
-    if ($until === '') return ['Not Refundable', 'b-glow-red'];
+    if ($until === '') return ['Not Refundable<br>(expired window)', 'b-glow-red'];
 
     $ts = strtotime($until);
-    if (!$ts) return ['Not Refundable', 'b-glow-red'];
+    if (!$ts) return ['Not Refundable<br>(expired window)', 'b-glow-red'];
 
     if (time() <= $ts) {
         $left = $ts - time();
         $hrs = (int)floor($left / 3600);
         if ($hrs < 0) $hrs = 0;
-        return ["Refundable (ends in ~{$hrs}h)", 'b-glow-green'];
+        return ["Refundable<br>(ends in ~{$hrs}h)", 'b-glow-green'];
     }
 
-    return ['Not Refundable (expired window)', 'b-glow-red'];
+    return ['Not Refundable<br>(expired window)', 'b-glow-red'];
 }
 ?>
 
@@ -123,26 +123,26 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
     background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.15); padding: 10px 16px;
     border-radius: var(--radius-md); color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 14px; 
     transition: var(--transition); position: relative; overflow: hidden; cursor:pointer;
+    white-space: nowrap;
 }
 .premium-dashboard .action-btn:hover { 
-    background: var(--accent-blue); border-color: var(--accent-blue-hover); 
-    box-shadow: 0 4px 15px var(--accent-blue-glow); color: #fff; 
+    filter: brightness(1.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); transform: translateY(-1px);
 }
 .premium-dashboard .btn-danger {
-    background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.15); color: #F87171;
+    background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: #FCA5A5; font-weight: 700;
 }
-.premium-dashboard .btn-danger:hover {
-    background: #DC2626; border-color: #B91C1C; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2); color: #fff;
+.premium-dashboard .btn-primary { 
+    background: rgba(37, 99, 235, 0.25); border-color: rgba(37, 99, 235, 0.4); color: #93C5FD; font-weight: 700;
 }
-.premium-dashboard .btn-primary { background: rgba(37, 99, 235, 0.1); color: #60A5FA; }
-.premium-dashboard .btn-primary:hover { background: var(--accent-blue); color: #fff; }
 
-.premium-dashboard table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
-.premium-dashboard th, .premium-dashboard td { padding: 16px 20px; text-align: left; font-size: 14px; }
+.premium-dashboard table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.premium-dashboard th, .premium-dashboard td { padding: 12px 10px; text-align: left; font-size: 13px; }
 .premium-dashboard th { 
     background: rgba(37, 99, 235, 0.05); font-size: 12px; text-transform: uppercase; 
     color: #60A5FA; font-weight: 700; letter-spacing: 1px;
     border-bottom: 2px solid rgba(37, 99, 235, 0.1);
+    white-space: nowrap;
 }
 .premium-dashboard tbody tr { transition: var(--transition); border-bottom: 1px solid rgba(255,255,255,0.02); display: table-row; }
 .premium-dashboard tbody tr td { border-bottom: 1px solid rgba(255,255,255,0.03); color: #e2e8f0; }
@@ -221,7 +221,7 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
     <span id="selCount" class="text-muted" style="font-weight: 500;">0 selected</span>
   </div>
 
-  <div style="overflow-x: auto; border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 12px;">
+  <div style="overflow-x: hidden; border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 12px;">
     <table>
     <thead>
       <tr>
@@ -259,7 +259,7 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
           $uid = (int)($u['id'] ?? 0);
         ?>
           <tr>
-            <td>
+            <td style="padding: 12px 10px;">
               <!-- IMPORTANT: checkbox belongs to bulkDeleteForm via form attr -->
               <input
                 type="checkbox"
@@ -271,35 +271,35 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
               >
             </td>
 
-            <td style="font-weight: 500; color: #fff;"><?= e((string)($u['email'] ?? '')) ?></td>
-            <td class="text-muted"><?= e((string)($u['product_profile'] ?? '')) ?></td>
-            <td class="text-muted"><?= e((string)($u['expires_at'] ?? '')) ?></td>
+            <td style="font-weight: 500; color: #fff; padding: 12px 10px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?= e((string)($u['email'] ?? '')) ?>"><?= e((string)($u['email'] ?? '')) ?></td>
+            <td class="text-muted" style="padding: 12px 10px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?= e((string)($u['product_profile'] ?? '')) ?>"><?= e((string)($u['product_profile'] ?? '')) ?></td>
+            <td class="text-muted" style="padding: 12px 10px;"><?= e((string)($u['expires_at'] ?? '')) ?></td>
 
-            <td>
-              <span class="status-badge <?= e($refundClass) ?>" style="font-size: 11px; padding: 4px 10px;"><?= e($refundLabel) ?></span>
+            <td style="padding: 12px 10px; line-height: 1.4;">
+              <span class="status-badge <?= e($refundClass) ?>" style="font-size: 11px; padding: 4px 10px; display: inline-block; white-space: normal; text-align: center; min-width: 100px;"><?= $refundLabel ?></span>
             </td>
 
-            <td>
+            <td style="padding: 12px 10px;">
               <!-- Extend: separate form (no longer nested) -->
-              <form method="post" style="display:flex;gap:8px;align-items:center; margin:0;">
+              <form method="post" style="display:flex;gap:6px;align-items:center; margin:0; flex-wrap: nowrap;">
                 <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
                 <input type="hidden" name="action" value="reseller_extend_user">
                 <input type="hidden" name="user_id" value="<?= $uid ?>">
-                <input name="expires_at" type="date" style="width:140px; padding: 8px 12px; font-size: 13px;" value="<?= e(!empty($u['expires_at']) ? date('Y-m-d', strtotime((string)$u['expires_at'].' +1 month')) : date('Y-m-d', strtotime('+1 month'))) ?>" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
-                <button class="action-btn btn-primary" style="padding: 8px 16px; font-size: 13px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Extend</button>
+                <input name="expires_at" type="date" style="width:130px; padding: 6px 8px; font-size: 13px;" value="<?= e(!empty($u['expires_at']) ? date('Y-m-d', strtotime((string)$u['expires_at'].' +1 month')) : date('Y-m-d', strtotime('+1 month'))) ?>" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
+                <button class="action-btn btn-primary" style="padding: 6px 12px; font-size: 13px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Extend</button>
               </form>
             </td>
 
-            <td><span class="status-badge <?= $badge ?>"><?= ucfirst(e($st)) ?></span></td>
+            <td style="padding: 12px 10px;"><span class="status-badge <?= $badge ?>"><?= ucfirst(e($st)) ?></span></td>
 
-            <td>
+            <td style="padding: 12px 10px;">
               <!-- Delete single user: separate form (no longer nested) -->
               <form method="post" onsubmit="return confirm('Delete from Adobe/Console + delete locally + refund charge (if eligible)?');" style="margin:0;">
                 <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
                 <input type="hidden" name="action" value="reseller_delete_user">
                 <input type="hidden" name="user_id" value="<?= $uid ?>">
                 <input type="hidden" name="remove_from_org" value="1">
-                <button class="action-btn btn-danger" style="padding: 8px 16px; font-size: 13px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Delete</button>
+                <button class="action-btn btn-danger" style="padding: 6px 12px; font-size: 13px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Delete</button>
               </form>
             </td>
           </tr>
