@@ -552,15 +552,56 @@ $announcements = get_announcements($pdo, 'reseller');
 .md-top-actions {
     display: flex;
     gap: 12px;
+    position: relative;
 }
 .md-icon-btn {
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.15);
     display: flex; align-items: center; justify-content: center;
     transition: 0.2s;
     text-decoration: none;
     color: white;
+    border: none;
+    cursor: pointer;
+}
+.md-lang-menu {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 4px;
+    z-index: 1000;
+    min-width: 140px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.md-lang-menu.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+.md-lang-menu a {
+    text-decoration: none;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.md-lang-menu a:hover {
+    background: #f1f5f9;
 }
 
 .md-revenue-label {
@@ -912,8 +953,13 @@ $announcements = get_announcements($pdo, 'reseller');
                 </div>
             </div>
             <div class="md-top-actions">
-                <a href="?<?= e(http_build_query(array_merge($_GET, ['lang'=>'en']))) ?>" class="md-icon-btn" style="width: auto; padding: 0 14px; border-radius: 12px; font-weight: 800; font-size: 13px; letter-spacing: 0.5px;">EN</a>
-                <a href="?<?= e(http_build_query(array_merge($_GET, ['lang'=>'ar']))) ?>" class="md-icon-btn" style="width: auto; padding: 0 14px; border-radius: 12px; font-weight: 700; font-size: 15px;">عربي</a>
+                <button type="button" class="md-icon-btn" onclick="document.getElementById('mobile-lang-dropdown').classList.toggle('show')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </button>
+                <div id="mobile-lang-dropdown" class="md-lang-menu">
+                    <a href="?<?= e(http_build_query(array_merge($_GET, ['lang'=>'en']))) ?>">English</a>
+                    <a href="?<?= e(http_build_query(array_merge($_GET, ['lang'=>'ar']))) ?>" style="font-family: Arial, sans-serif;">عربي</a>
+                </div>
             </div>
         </div>
         
@@ -954,14 +1000,6 @@ $announcements = get_announcements($pdo, 'reseller');
                     Make It Yours <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
             <?php endif; ?>
-        </div>
-
-        <!-- Filter Tabs (Static visual copy) -->
-        <div class="md-tabs">
-            <div class="md-tab active">Today</div>
-            <div class="md-tab">Week</div>
-            <div class="md-tab">Month</div>
-            <div class="md-tab">Year</div>
         </div>
 
         <!-- 4 Grid Stats -->
@@ -1168,3 +1206,13 @@ function time_elapsed_string($datetime) {
     return 'just now';
 }
 ?>
+
+<script>
+document.addEventListener('click', function(event) {
+    var langBtn = document.querySelector('.md-icon-btn');
+    var langMenu = document.getElementById('mobile-lang-dropdown');
+    if (langMenu && langMenu.classList.contains('show') && !langBtn.contains(event.target) && !langMenu.contains(event.target)) {
+        langMenu.classList.remove('show');
+    }
+});
+</script>
