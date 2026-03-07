@@ -85,27 +85,6 @@ $announcements = get_announcements($pdo, 'reseller');
 .premium-dashboard .flex-between { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
 .premium-dashboard .flex-center { display: flex; align-items: center; gap: 10px; }
 
-/* Animated Blue Gradient Background */
-.premium-dashboard .gradient-blue-box {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
-    background-size: 200% 200%;
-    animation: gradientMove 6s ease infinite, fadeUp 0.6s ease backwards;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    box-shadow: 0 8px 30px rgba(30, 58, 138, 0.2);
-}
-
-.premium-dashboard .gradient-blue-box:hover {
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
-    border-color: rgba(59, 130, 246, 0.5);
-}
-
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 /* Status Badges */
 .premium-dashboard .status-badge {
     padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
