@@ -187,13 +187,13 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
   <form method="get" style="margin:20px 0; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
     <input type="hidden" name="page" value="reseller_users">
     <input type="text" name="q" value="<?= e($q) ?>" placeholder="Search email or profile..." style="flex:1; min-width:260px;">
-    <button class="action-btn btn-primary" type="submit">
-      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <button class="status-badge b-glow-blue" style="cursor: pointer; padding: 10px 20px; font-size: 14px;" type="submit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Search
     </button>
     <?php if ($q !== ''): ?>
-      <a class="action-btn" href="?page=reseller_users">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <a class="status-badge b-glow-red" style="cursor: pointer; padding: 10px 20px; font-size: 14px; text-decoration: none;" href="?page=reseller_users">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         Clear
       </a>
     <?php endif; ?>
