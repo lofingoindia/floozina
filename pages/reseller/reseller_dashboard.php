@@ -155,7 +155,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-1" style="background: linear-gradient(135deg, rgba(20,25,38,0.9) 0%, rgba(10,14,23,0.95) 100%); border-color: rgba(59,130,246,0.2); box-shadow: 0 8px 32px var(--accent-blue-glow);">
         <div class="flex-between">
             <div>
-                <h2 class="gradient-text" style="font-size: 28px; margin-bottom: 6px;">Welcome back, <?= e($_SESSION['username']) ?>! 👋</h2>
+                <h2 class="gradient-text" style="font-size: 28px; margin-bottom: 6px;">Welcome back, <?= e($_SESSION['username']) ?>! <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-left:4px;"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></h2>
                 <div class="text-muted" style="display:flex; align-items:center; gap:8px;">
                     <span style="display:inline-block; width:8px; height:8px; background:#4ADE80; border-radius:50%; box-shadow:0 0 10px rgba(74,222,128,0.5);"></span>
                     <?= date('l, F j, Y') ?>
@@ -163,10 +163,10 @@ $announcements = get_announcements($pdo, 'reseller');
             </div>
             <div class="flex-center">
                 <span class="status-badge <?= $balance >= 0 ? 'b-glow-green' : 'b-glow-red' ?>" style="font-size: 14px; padding: 10px 16px;">
-                    <span style="font-size: 16px;">💰</span> Balance: $<?= money_fmt($balance) ?>
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></span> Balance: $<?= money_fmt($balance) ?>
                 </span>
                 <span class="status-badge b-glow-blue" style="font-size: 14px; padding: 10px 16px;">
-                    <span style="font-size: 16px;">📈</span> Rate: $<?= money_fmt($monthly_rate) ?>/mo
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span> Rate: $<?= money_fmt($monthly_rate) ?>/mo
                 </span>
             </div>
         </div>
@@ -177,7 +177,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-1">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #60A5FA;">📢</div>
+                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #60A5FA;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
                 <h3 style="font-size: 20px;">Announcements & Updates</h3>
             </div>
             <span class="status-badge b-glow-blue"><?= count($announcements) ?> New</span>
@@ -187,11 +187,11 @@ $announcements = get_announcements($pdo, 'reseller');
             <?php foreach (array_slice($announcements, 0, 3) as $a): 
                 $a_class = 'a-info';
                 $badge = 'b-glow-blue';
-                $icon = 'ℹ️';
+                $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
                 
-                if ($a['type'] === 'success') { $badge = 'b-glow-green'; $icon = '✅'; $a_class = 'a-success'; }
-                elseif ($a['type'] === 'warning') { $badge = 'b-glow-yellow'; $icon = '⚠️'; $a_class = 'a-warning'; }
-                elseif ($a['type'] === 'danger') { $badge = 'b-glow-red'; $icon = '🚨'; $a_class = 'a-danger'; }
+                if ($a['type'] === 'success') { $badge = 'b-glow-green'; $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'; $a_class = 'a-success'; }
+                elseif ($a['type'] === 'warning') { $badge = 'b-glow-yellow'; $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'; $a_class = 'a-warning'; }
+                elseif ($a['type'] === 'danger') { $badge = 'b-glow-red'; $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><circle cx="12" cy="12" r="4"/><path d="m12 8 4 4-4 4-4-4z"/></svg>'; $a_class = 'a-danger'; }
                 
                 $is_new = (time() - strtotime($a['created_at'])) < (2 * 24 * 60 * 60);
             ?>
@@ -232,7 +232,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <?php else: ?>
     <div class="premium-card delay-1" style="border: 1px dashed rgba(255,255,255,0.1); background: transparent; box-shadow: none;">
         <div class="flex-center" style="justify-content: center; padding: 20px; color: var(--text-muted);">
-            <span style="font-size:24px; opacity:0.5">📪</span>
+            <span style="font-size:24px; opacity:0.5"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
             <p style="margin:0; font-size: 15px;">No announcements at this time. Check back later!</p>
         </div>
     </div>
@@ -242,7 +242,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="stats-grid delay-2">
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
             <div class="flex-center" style="gap: 16px;">
-                <div class="stat-icon" style="color: #A5B4FC; background: rgba(165, 180, 252, 0.1); border-color: rgba(165, 180, 252, 0.2);">👥</div>
+                <div class="stat-icon" style="color: #A5B4FC; background: rgba(165, 180, 252, 0.1); border-color: rgba(165, 180, 252, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div>
                     <div class="stat-val"><?= $total_users ?></div>
                     <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Total Users</div>
@@ -252,7 +252,7 @@ $announcements = get_announcements($pdo, 'reseller');
         
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
             <div class="flex-center" style="gap: 16px;">
-                <div class="stat-icon" style="color: #FBBF24; background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2);">⚠️</div>
+                <div class="stat-icon" style="color: #FBBF24; background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
                 <div>
                     <div class="stat-val" style="color: #FBBF24; font-size: 28px;"><?= $expiring_soon ?></div>
                     <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Expiring Soon</div>
@@ -262,7 +262,7 @@ $announcements = get_announcements($pdo, 'reseller');
         
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
             <div class="flex-center" style="gap: 16px;">
-                <div class="stat-icon" style="color: #F87171; background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2);">❌</div>
+                <div class="stat-icon" style="color: #F87171; background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
                 <div>
                     <div class="stat-val" style="color: #F87171; font-size: 28px;"><?= $expired_users ?></div>
                     <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Expired</div>
@@ -272,7 +272,7 @@ $announcements = get_announcements($pdo, 'reseller');
         
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
             <div class="flex-center" style="gap: 16px;">
-                <div class="stat-icon" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; background: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)' ?>; border-color: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.2)' : 'rgba(248, 113, 113, 0.2)' ?>;">💰</div>
+                <div class="stat-icon" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; background: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)' ?>; border-color: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.2)' : 'rgba(248, 113, 113, 0.2)' ?>;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
                 <div>
                     <div class="stat-val" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; font-size: 26px;">$<?= money_fmt($balance) ?></div>
                     <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Current Balance</div>
@@ -285,22 +285,22 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="split-row delay-3">
         <div class="premium-card" style="margin-bottom: 0; min-height: 100%;">
             <div class="flex-center" style="margin-bottom: 20px;">
-                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(250, 204, 21, 0.1); color: #FBBF24; border-color: rgba(250, 204, 21, 0.2);">⚡</div>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(250, 204, 21, 0.1); color: #FBBF24; border-color: rgba(250, 204, 21, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                 <h3 style="font-size: 18px;">Quick Actions</h3>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px;">
                 <a href="?page=reseller_assign" class="action-btn">
-                    <span style="font-size: 16px;">➕</span> Assign User
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Assign User
                 </a>
                 <a href="?page=reseller_bulk_assign" class="action-btn">
-                    <span style="font-size: 16px;">📦</span> Bulk Assign
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span> Bulk Assign
                 </a>
                 <a href="?page=reseller_users" class="action-btn">
-                    <span style="font-size: 16px;">👥</span> View Users
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> View Users
                 </a>
                 <a href="?page=reseller_billing" class="action-btn">
-                    <span style="font-size: 16px;">💳</span> Billing
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span> Billing
                 </a>
             </div>
         </div>
@@ -309,7 +309,7 @@ $announcements = get_announcements($pdo, 'reseller');
             <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
             
             <div class="flex-center" style="margin-bottom: 20px;">
-                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(16, 185, 129, 0.1); color: #34D399; border-color: rgba(16, 185, 129, 0.2);">📊</div>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(16, 185, 129, 0.1); color: #34D399; border-color: rgba(16, 185, 129, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
                 <h3 style="font-size: 18px;">Usage Overview</h3>
             </div>
             
@@ -338,7 +338,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-4">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(165, 180, 252, 0.1); color: #A5B4FC;">🕒</div>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(165, 180, 252, 0.1); color: #A5B4FC;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                 <h3 style="font-size: 18px;">Recent Users</h3>
             </div>
             <a href="?page=reseller_users" class="action-btn btn-small">View All →</a>
@@ -389,7 +389,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-4">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(96, 165, 250, 0.1); color: #60A5FA;">💰</div>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(96, 165, 250, 0.1); color: #60A5FA;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
                 <h3 style="font-size: 18px;">Recent Transactions</h3>
             </div>
             <a href="?page=reseller_billing" class="action-btn btn-small">View All →</a>
