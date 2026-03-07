@@ -67,11 +67,11 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
 }
 
 .premium-dashboard .premium-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
+    background: linear-gradient(135deg, #0f1219 0%, #0a0d14 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
     border-radius: var(--radius-lg);
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-blue-glow);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -84,18 +84,7 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.premium-dashboard .premium-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-blue-glow);
-    border-color: rgba(59, 130, 246, 0.3);
-}
-
-.premium-dashboard .premium-card:hover::before {
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
     opacity: 1;
 }
 
