@@ -214,7 +214,7 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
   </form>
 
   <div style="display:flex;gap:12px;align-items:center;justify-content:flex-end;margin:12px 0 20px;">
-    <button class="action-btn btn-danger" style="padding: 10px 20px;" type="submit" form="bulkDeleteForm" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
+    <button class="status-badge b-glow-red" style="cursor: pointer; padding: 8px 16px;" type="submit" form="bulkDeleteForm" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
       Delete Selected
     </button>
@@ -286,7 +286,7 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
                 <input type="hidden" name="action" value="reseller_extend_user">
                 <input type="hidden" name="user_id" value="<?= $uid ?>">
                 <input name="expires_at" type="date" style="width:130px; padding: 6px 8px; font-size: 13px;" value="<?= e(!empty($u['expires_at']) ? date('Y-m-d', strtotime((string)$u['expires_at'].' +1 month')) : date('Y-m-d', strtotime('+1 month'))) ?>" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
-                <button class="action-btn btn-primary" style="padding: 6px 12px; font-size: 13px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Extend</button>
+                <button class="status-badge b-glow-blue" style="cursor: pointer; padding: 6px 14px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Extend</button>
               </form>
             </td>
 
@@ -299,7 +299,7 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
                 <input type="hidden" name="action" value="reseller_delete_user">
                 <input type="hidden" name="user_id" value="<?= $uid ?>">
                 <input type="hidden" name="remove_from_org" value="1">
-                <button class="action-btn btn-danger" style="padding: 6px 12px; font-size: 13px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Delete</button>
+                <button class="status-badge b-glow-red" style="cursor: pointer; padding: 6px 14px;" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Delete</button>
               </form>
             </td>
           </tr>
