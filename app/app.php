@@ -3973,133 +3973,7 @@ function layout_header(string $title, ?string $flash_success, ?string $flash_err
   .org-title{font-size:16px}
 }
 
-/* Theme Toggle styles */
-[data-theme="light"] {
-  --bg: #f8fafc;
-  --panel: #ffffff;
-  --panel2: #f1f5f9;
-  --text: #0f172a;
-  --muted: #64748b;
-  --muted2: #475569;
-  --border: rgba(0,0,0,0.1);
-  --border2: rgba(0,0,0,0.05);
-  --focus: rgba(0,0,0,0.05);
-  background: var(--bg) !important;
-}
-[data-theme="light"] body {
-  background: var(--bg) !important;
-}
-[data-theme="light"] .sidebar {
-  background: var(--panel);
-  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-}
-[data-theme="light"] .sidebar-inner {
-  background: var(--panel);
-  border-color: var(--border2);
-}
-[data-theme="light"] .nav-item.active {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-  border-color: rgba(59, 130, 246, 0.2);
-}
-[data-theme="light"] .nav-item.active .nav-dot {
-  background: #3b82f6;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
-}
-[data-theme="light"] .table th {
-  background: var(--panel2);
-  color: var(--muted);
-}
-[data-theme="light"] .card {
-  background: var(--panel);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-}
-[data-theme="light"] .premium-card {
-  background: var(--panel) !important;
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
-}
-[data-theme="light"] .premium-dashboard h2,
-[data-theme="light"] .premium-dashboard h3,
-[data-theme="light"] .gradient-text {
-  color: var(--text) !important;
-  -webkit-text-fill-color: var(--text) !important;
-}
-[data-theme="light"] .stat-icon {
-  background: rgba(59,130,246,0.1) !important;
-  border-color: rgba(59,130,246,0.2) !important;
-  color: #3b82f6 !important;
-}
-[data-theme="light"] .action-btn {
-  background: var(--panel2);
-  color: var(--text);
-  border-color: var(--border);
-}
-[data-theme="light"] .logout-btn {
-  background: rgba(0,0,0,0.05);
-  color: var(--text);
-}
-[data-theme="light"] .logout-btn:hover {
-  background: #ff4d4d;
-  color: #fff;
-}
-[data-theme="light"] .theme-toggle-wrap {
-  background: rgba(0,0,0,0.02);
-}
-[data-theme="light"] .theme-toggle-switch {
-  background: #3b82f6;
-  border-color: #3b82f6;
-}
-[data-theme="light"] .theme-toggle-switch::after {
-  left: 20px;
-  background: #fff;
-}
-
-.theme-toggle-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.theme-toggle-switch {
-  position: relative;
-  width: 42px;
-  height: 24px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.3s, border-color 0.3s;
-}
-.theme-toggle-switch::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  background: #fff;
-  border-radius: 50%;
-  transition: left 0.3s, background 0.3s;
-}
-
 </style>
-<script>
-  // Apply theme early to prevent flash
-  (function() {
-    var theme = localStorage.getItem('theme') || 'dark';
-    if (theme === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  })();
-</script>
 </head>
 <body class="<?= is_rtl() ? 'rtl' : '' ?>">
 <?php if ($isShell): ?>
@@ -4136,11 +4010,6 @@ function layout_header(string $title, ?string $flash_success, ?string $flash_err
                 <div class="badge b-danger" style="margin-top:4px"><?= e(t('Suspended')) ?></div>
               <?php endif; ?>
             </div>
-          </div>
-
-          <div class="theme-toggle-wrap">
-            <span><?= e(t('Light Theme')) ?></span>
-            <div class="theme-toggle-switch" id="themeToggleBtn"></div>
           </div>
 
           <form method="post" style="margin:0">
@@ -4480,22 +4349,6 @@ document.addEventListener('DOMContentLoaded', function(){
     if(a && window.matchMedia('(max-width: 940px)').matches) closeNav();
   });
 })();
-
-document.addEventListener('DOMContentLoaded', function() {
-  const themeToggle = document.getElementById('themeToggleBtn');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', function() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      if (currentTheme === 'light') {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-      }
-    });
-  }
-});
 </script>
 
 </body></html>
@@ -4924,18 +4777,6 @@ if (PHP_SAPI !== 'cli') {
     --text-main: #e2e8f0;
     --text-muted: #94a3b8;
     --border-color: #243247;
-    --bg-input: #0b1220;
-}
-
-[data-theme="light"] {
-    --bg-main: #f8fafc;
-    --bg-sidebar: #ffffff;
-    --bg-card: #ffffff;
-    --bg-hover: #f1f5f9;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border-color: rgba(0,0,0,0.1);
-    --bg-input: #ffffff;
 }
 
 body{background:var(--bg-main)!important;color:var(--text-main)!important;}
@@ -4943,12 +4784,12 @@ body{background:var(--bg-main)!important;color:var(--text-main)!important;}
 .card, .table, .content-wrapper{background:var(--bg-card)!important;border:1px solid var(--border-color)!important;}
 .sidebar .nav-link{color:var(--text-muted)!important;}
 .sidebar .nav-link.active,
-.sidebar .nav-link:hover{background:var(--primary)!important;color:#ffffff!important;}
-.btn-primary,.btn-accent{background:var(--primary)!important;border:none!important;color:#ffffff!important;}
+.sidebar .nav-link:hover{background:var(--primary)!important;color:#fff!important;}
+.btn-primary,.btn-accent{background:var(--primary)!important;border:none!important;color:#fff!important;}
 .btn-primary:hover,.btn-accent:hover{background:var(--primary-dark)!important;}
 .btn-danger{background:var(--danger)!important;border:none!important;}
 .badge-success{background:var(--success)!important;}
-input,select,textarea{background:var(--bg-input)!important;border:1px solid var(--border-color)!important;color:var(--text-main)!important;}
+input,select,textarea{background:#0b1220!important;border:1px solid var(--border-color)!important;color:#fff!important;}
 table th{color:var(--text-muted)!important;}
 </style>';
 }
