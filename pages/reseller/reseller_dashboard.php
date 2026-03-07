@@ -774,20 +774,17 @@ $announcements = get_announcements($pdo, 'reseller');
 .md-stat-box {
     flex: 1 1 0;
     min-width: 0;
-    background: #8e80d4;
+    background: #6e58b8;
     border-radius: 12px;
-    padding: 12px;
+    padding: 12px 8px;
     color: white;
     display: flex; flex-direction: column; justify-content: space-between;
     min-height: 80px;
 }
-.md-stat-box-1 { background: #887bbb; }
-.md-stat-box-2 { background: #6e58b8; }
-.md-stat-box-3 { background: #bbaae1; color: white; }
 
 .md-stat-icon { font-size: 18px; margin-bottom: 10px; }
 .md-stat-bottom { text-align: right; }
-.md-stat-num { font-size: 20px; font-weight: 800; line-height: 1; }
+.md-stat-num { font-size: clamp(12px, 3.5vw, 18px); font-weight: 800; line-height: 1.2; word-break: break-word; }
 .md-stat-text { font-size: 11px; opacity: 0.9; }
 
 /* Table Performance (Transactions) */
