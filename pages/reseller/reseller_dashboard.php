@@ -37,100 +37,66 @@ $announcements = get_announcements($pdo, 'reseller');
 ?>
 
 <style>
-/* Beyond Imagination - Ultra Premium Glass & Cyan-Blue Dashboard */
+/* Matte Premium Black & Blue Dashboard Styles */
 .premium-dashboard {
     --bg-main: transparent;
-    --card-bg: rgba(15, 18, 25, 0.45);
-    --card-border: rgba(70, 177, 247, 0.15);
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --accent-blue: #46B1F7;
-    --accent-blue-hover: #2b9bee;
-    --accent-blue-glow: rgba(70, 177, 247, 0.35);
-    --radius-lg: 24px;
-    --radius-md: 16px;
-    --transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    --card-bg: #0f1219;
+    --card-border: rgba(59, 130, 246, 0.1);
+    --text-main: #e2e8f0;
+    --text-muted: #8b98a5;
+    --accent-blue: #2563eb;
+    --accent-blue-hover: #1d4ed8;
+    --accent-blue-glow: rgba(37, 99, 235, 0.2);
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     
     color: var(--text-main);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    position: relative;
-    z-index: 1;
-}
-
-/* Ambient Background Glows */
-.premium-dashboard::before,
-.premium-dashboard::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: -1;
-    opacity: 0.15;
-    pointer-events: none;
-    animation: floatingGlow 15s ease-in-out infinite alternate;
-}
-.premium-dashboard::before {
-    top: -10%; left: -10%;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
-}
-.premium-dashboard::after {
-    bottom: -10%; right: -10%;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
-    animation-delay: -5s;
-}
-
-@keyframes floatingGlow {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
-    50% { transform: translate(50px, 30px) scale(1.1); opacity: 0.2; }
-    100% { transform: translate(-30px, 50px) scale(0.9); opacity: 0.15; }
 }
 
 .premium-dashboard .premium-card {
     background: var(--card-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
-    padding: 28px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: fadeUp 0.6s ease backwards;
     margin-bottom: 24px;
 }
 
-.premium-dashboard .premium-card::after {
+.premium-dashboard .premium-card::before {
     content: '';
     position: absolute;
-    top: 0; left: -150%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-    transform: skewX(-20deg);
-    transition: 0.7s;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+    opacity: 0;
+    transition: var(--transition);
 }
 
 .premium-dashboard .premium-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--accent-blue-glow);
-    border-color: rgba(70, 177, 247, 0.4);
-    background: rgba(20, 25, 35, 0.6);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-blue-glow);
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
-.premium-dashboard .premium-card:hover::after {
-    left: 200%;
+.premium-dashboard .premium-card:hover::before {
+    opacity: 1;
 }
 
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(5px); }
-    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulseGlow {
-    0% { box-shadow: 0 0 0 0 rgba(70, 177, 247, 0.5); }
-    70% { box-shadow: 0 0 0 12px rgba(70, 177, 247, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(70, 177, 247, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
 }
 
 .delay-1 { animation-delay: 0.1s; }
@@ -139,47 +105,42 @@ $announcements = get_announcements($pdo, 'reseller');
 .delay-4 { animation-delay: 0.4s; }
 
 .premium-dashboard .flex-between { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
-.premium-dashboard .flex-center { display: flex; align-items: center; gap: 12px; }
+.premium-dashboard .flex-center { display: flex; align-items: center; gap: 10px; }
 
 /* Status Badges */
 .premium-dashboard .status-badge {
-    padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
     display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border: 1px solid transparent;
     transition: var(--transition);
-    backdrop-filter: blur(10px);
 }
-.premium-dashboard .status-badge:hover { transform: scale(1.05); }
+.premium-dashboard .status-badge:hover { filter: brightness(1.1); transform: scale(1.02); }
 
-.b-glow-blue { background: rgba(70, 177, 247, 0.1); color: #46B1F7; border-color: rgba(70, 177, 247, 0.3); box-shadow: 0 0 15px rgba(70, 177, 247, 0.15); }
-.b-glow-green { background: rgba(52, 211, 153, 0.1); color: #34d399; border-color: rgba(52, 211, 153, 0.3); box-shadow: 0 0 15px rgba(52, 211, 153, 0.15); }
-.b-glow-red { background: rgba(248, 113, 113, 0.1); color: #f87171; border-color: rgba(248, 113, 113, 0.3); box-shadow: 0 0 15px rgba(248, 113, 113, 0.15); }
-.b-glow-yellow { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); box-shadow: 0 0 15px rgba(251, 191, 36, 0.15); }
+.b-glow-blue { background: rgba(37, 99, 235, 0.1); color: #60A5FA; border-color: rgba(37, 99, 235, 0.2); }
+.b-glow-green { background: rgba(16, 185, 129, 0.1); color: #34D399; border-color: rgba(16, 185, 129, 0.2); }
+.b-glow-red { background: rgba(239, 68, 68, 0.1); color: #F87171; border-color: rgba(239, 68, 68, 0.2); }
+.b-glow-yellow { background: rgba(245, 158, 11, 0.1); color: #FBBF24; border-color: rgba(245, 158, 11, 0.2); }
 
 /* Typography */
-.premium-dashboard .text-muted { color: var(--text-muted); font-size: 14px; font-weight: 400; }
-.premium-dashboard h2, .premium-dashboard h3 { margin: 0; font-weight: 800; color: #FFFFFF; letter-spacing: -0.5px; }
+.premium-dashboard .text-muted { color: var(--text-muted); font-size: 14px; }
+.premium-dashboard h2, .premium-dashboard h3 { margin: 0; font-weight: 700; color: #FFFFFF; letter-spacing: -0.5px; }
 .premium-dashboard .gradient-text {
-    background: linear-gradient(135deg, #ffffff 10%, #46B1F7 100%);
+    background: linear-gradient(90deg, #FFFFFF, #60A5FA);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 20px rgba(70, 177, 247, 0.2);
 }
 
 /* Stats */
-.premium-dashboard .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 24px; }
+.premium-dashboard .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px; }
 .premium-dashboard .stat-icon {
-    width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 28px;
-    background: linear-gradient(135deg, rgba(70, 177, 247, 0.1) 0%, rgba(70, 177, 247, 0.02) 100%);
-    border: 1px solid rgba(70, 177, 247, 0.25); 
-    box-shadow: inset 0 0 20px rgba(70, 177, 247, 0.05), 0 8px 16px rgba(0,0,0,0.2);
+    width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px;
+    background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.15); box-shadow: inset 0 0 20px rgba(37, 99, 235, 0.02);
     transition: var(--transition);
 }
 .premium-dashboard .premium-card:hover .stat-icon {
-    transform: scale(1.1) rotate(5deg);
-    border-color: rgba(70, 177, 247, 0.5);
-    box-shadow: inset 0 0 20px rgba(70, 177, 247, 0.15), 0 8px 24px rgba(70, 177, 247, 0.2);
+    transform: scale(1.05) rotate(-2deg);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
-.premium-dashboard .stat-val { font-size: 38px; font-weight: 800; margin: 4px 0 0 0; line-height: 1.1; letter-spacing: -1.5px; }
+.premium-dashboard .stat-val { font-size: 34px; font-weight: 800; margin: 4px 0 0 0; line-height: 1.1; letter-spacing: -1px; }
 
 /* Grid Layout */
 .premium-dashboard .split-row { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
@@ -187,62 +148,57 @@ $announcements = get_announcements($pdo, 'reseller');
 
 /* Buttons */
 .premium-dashboard .action-btn {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: rgba(70, 177, 247, 0.05); border: 1px solid rgba(70, 177, 247, 0.2); padding: 16px;
-    border-radius: var(--radius-md); color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 15px; 
-    transition: var(--transition); position: relative; overflow: hidden; backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.15); padding: 14px;
+    border-radius: var(--radius-md); color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 14px; 
+    transition: var(--transition); position: relative; overflow: hidden;
 }
-.premium-dashboard .action-btn::before {
-    content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--accent-blue), #8b5cf6);
-    opacity: 0; transition: var(--transition); z-index: -1;
+.premium-dashboard .action-btn::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: skewX(-20deg); transition: 0.5s;
 }
 .premium-dashboard .action-btn:hover { 
-    border-color: transparent; box-shadow: 0 8px 25px var(--accent-blue-glow); color: #fff; transform: translateY(-3px);
+    background: var(--accent-blue); border-color: var(--accent-blue-hover); 
+    box-shadow: 0 4px 15px var(--accent-blue-glow); color: #fff; 
 }
-.premium-dashboard .action-btn:hover::before { opacity: 1; }
+.premium-dashboard .action-btn:hover::after { left: 150%; }
 
-.premium-dashboard .btn-small { padding: 10px 20px; font-size: 14px; border-radius: 12px; }
+.premium-dashboard .btn-small { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
 
 /* Tables */
 .premium-dashboard table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
-.premium-dashboard th, .premium-dashboard td { padding: 18px 20px; text-align: left; font-size: 15px; }
+.premium-dashboard th, .premium-dashboard td { padding: 16px 20px; text-align: left; font-size: 14px; }
 .premium-dashboard th { 
-    background: rgba(70, 177, 247, 0.08); font-size: 12px; text-transform: uppercase; 
-    color: #46B1F7; font-weight: 800; letter-spacing: 1.5px;
-    border-bottom: 1px solid rgba(70, 177, 247, 0.2);
+    background: rgba(37, 99, 235, 0.05); font-size: 12px; text-transform: uppercase; 
+    color: #60A5FA; font-weight: 700; letter-spacing: 1px;
+    border-bottom: 2px solid rgba(37, 99, 235, 0.1);
 }
-.premium-dashboard th:first-child { border-top-left-radius: 12px; }
-.premium-dashboard th:last-child { border-top-right-radius: 12px; }
-.premium-dashboard tbody tr { transition: var(--transition); border-bottom: 1px solid rgba(255,255,255,0.02); }
-.premium-dashboard tbody tr td { border-bottom: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
+.premium-dashboard tbody tr { transition: var(--transition); border-bottom: 1px solid rgba(255,255,255,0.02); display: table-row; }
+.premium-dashboard tbody tr td { border-bottom: 1px solid rgba(255,255,255,0.03); }
 .premium-dashboard tbody tr:last-child td { border-bottom: none; }
-.premium-dashboard tbody tr:hover td { background: rgba(70, 177, 247, 0.05); color: #fff; }
-.premium-dashboard tbody tr:hover td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
-.premium-dashboard tbody tr:hover td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+.premium-dashboard tbody tr:hover td { background: rgba(37, 99, 235, 0.03); color: #fff; }
 
 /* Announcements */
 .premium-dashboard .announcement-card {
-    padding: 20px; border-radius: var(--radius-md); position: relative;
-    border: 1px solid rgba(70, 177, 247, 0.1); margin-bottom: 16px; transition: var(--transition);
-    background: linear-gradient(135deg, rgba(20, 25, 35, 0.6) 0%, rgba(15, 18, 25, 0.8) 100%);
-    backdrop-filter: blur(12px);
+    padding: 18px 20px; border-radius: var(--radius-md); position: relative;
+    border: 1px solid rgba(37, 99, 235, 0.1); margin-bottom: 12px; transition: var(--transition);
+    background: rgba(15, 18, 25, 0.8);
 }
 .premium-dashboard .announcement-card:hover { 
-    transform: translateX(8px) translateY(-2px); 
-    background: linear-gradient(135deg, rgba(30, 40, 55, 0.7) 0%, rgba(20, 25, 35, 0.9) 100%);
-    border-color: rgba(70, 177, 247, 0.4);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2), -5px 0 20px var(--accent-blue-glow);
+    transform: translateX(6px); background: rgba(37, 99, 235, 0.03); 
+    border-color: rgba(37, 99, 235, 0.3);
 }
 .premium-dashboard .a-new { 
-    position: absolute; top: -10px; right: 20px; background: linear-gradient(135deg, #46B1F7, #2563eb); 
-    color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; 
-    box-shadow: 0 4px 15px rgba(70, 177, 247, 0.5); animation: pulseGlow 2s infinite; letter-spacing: 1px;
+    position: absolute; top: -8px; right: 16px; background: var(--accent-blue); color: #fff; 
+    padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; 
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4); animation: pulseGlow 2s infinite;
 }
 
-.a-info { border-left: 4px solid #46B1F7; }
-.a-success { border-left: 4px solid #34d399; }
-.a-warning { border-left: 4px solid #fbbf24; }
-.a-danger { border-left: 4px solid #f87171; }
+.a-info { border-left: 3px solid #60A5FA; }
+.a-success { border-left: 3px solid #34D399; }
+.a-warning { border-left: 3px solid #FBBF24; }
+.a-danger { border-left: 3px solid #F87171; }
 </style>
 
 <div class="premium-dashboard">
@@ -273,8 +229,8 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-1">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon" style="width: 44px; height: 44px; font-size: 20px; background: rgba(70,177,247,0.1); border-color: rgba(70,177,247,0.2); color: #46B1F7;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
-                <h3 style="font-size: 22px;">Announcements & Updates</h3>
+                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #60A5FA;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+                <h3 style="font-size: 20px;">Announcements & Updates</h3>
             </div>
             <span class="status-badge b-glow-blue"><?= count($announcements) ?> New</span>
         </div>
@@ -318,7 +274,7 @@ $announcements = get_announcements($pdo, 'reseller');
             
             <?php if (count($announcements) > 3): ?>
             <div style="text-align: center; margin-top: 15px;">
-                <a href="?page=reseller_announcements" class="action-btn" style="display: inline-flex; background: rgba(70, 177, 247, 0.05); border-color: rgba(70, 177, 247, 0.2); color: #46B1F7;">
+                <a href="?page=reseller_announcements" class="action-btn" style="display: inline-flex; background: transparent; border-color: transparent; color: #60A5FA;">
                     View all <?= count($announcements) ?> announcements →
                 </a>
             </div>
@@ -338,7 +294,7 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="stats-grid delay-2">
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
             <div class="flex-center" style="gap: 16px;">
-                <div class="stat-icon" style="color: #46B1F7; background: rgba(70, 177, 247, 0.1); border-color: rgba(70, 177, 247, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div class="stat-icon" style="color: #A5B4FC; background: rgba(165, 180, 252, 0.1); border-color: rgba(165, 180, 252, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div>
                     <div class="stat-val"><?= $total_users ?></div>
                     <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Total Users</div>
@@ -420,7 +376,7 @@ $announcements = get_announcements($pdo, 'reseller');
 
                 <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 12px;">
                     <span class="text-muted" style="font-weight: 500;">Monthly Rate</span>
-                    <span style="color:#46B1F7; font-weight:700; font-size: 16px;">$<?= money_fmt($monthly_rate) ?></span>
+                    <span style="color:#60A5FA; font-weight:700; font-size: 16px;">$<?= money_fmt($monthly_rate) ?></span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: linear-gradient(90deg, rgba(251, 191, 36, 0.1), transparent); border-radius: 12px; border-left: 2px solid #FBBF24;">
                     <span style="font-weight: 600; color: #FBBF24;">Est. Monthly Cost</span>
@@ -434,8 +390,8 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-4">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(70, 177, 247, 0.1); color: #46B1F7;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-                <h3 style="font-size: 20px;">Recent Users</h3>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(165, 180, 252, 0.1); color: #A5B4FC;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <h3 style="font-size: 18px;">Recent Users</h3>
             </div>
             <a href="?page=reseller_users" class="action-btn btn-small">View All →</a>
         </div>
@@ -485,8 +441,8 @@ $announcements = get_announcements($pdo, 'reseller');
     <div class="premium-card delay-4">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(70, 177, 247, 0.1); color: #46B1F7;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
-                <h3 style="font-size: 20px;">Recent Transactions</h3>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(96, 165, 250, 0.1); color: #60A5FA;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
+                <h3 style="font-size: 18px;">Recent Transactions</h3>
             </div>
             <a href="?page=reseller_billing" class="action-btn btn-small">View All →</a>
         </div>
