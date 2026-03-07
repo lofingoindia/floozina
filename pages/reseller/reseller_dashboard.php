@@ -304,7 +304,7 @@ $announcements = get_announcements($pdo, 'reseller');
 
     <!-- Quick Actions and Overview Split -->
     <div class="split-row delay-3">
-        <div class="premium-card gradient-blue-box" style="margin-bottom: 0; min-height: 100%;">
+        <div class="premium-card" style="margin-bottom: 0; min-height: 100%;">
             <div class="flex-center" style="margin-bottom: 20px;">
                 <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(250, 204, 21, 0.1); color: #FBBF24; border-color: rgba(250, 204, 21, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                 <h3 style="font-size: 18px;">Quick Actions</h3>
