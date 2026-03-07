@@ -498,8 +498,12 @@ $announcements = get_announcements($pdo, 'reseller');
 <style>
 @media (max-width: 767px) {
     .topbar { display: none !important; }
-    .main { padding: 0 !important; padding-bottom: 20px !important; }
+    .app { padding: 0 !important; margin: 0 !important; }
+    .main { padding: 0 !important; margin: 0 !important; }
+    .content { padding: 0 !important; margin: 0 !important; max-width: 100% !important; overflow-x: hidden; }
     .sidebar { display: none !important; }
+    .content-wrapper { padding: 0 !important; margin: 0 !important; border: none !important; border-radius: 0 !important; background: #ffffff !important; box-shadow: none !important; }
+    body, html { background: #ffffff !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden; }
 }
 
 .mobile-dashboard {
