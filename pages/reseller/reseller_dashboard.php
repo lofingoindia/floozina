@@ -326,7 +326,7 @@ $announcements = get_announcements($pdo, 'reseller');
             </div>
         </div>
         
-        <div class="premium-card gradient-blue-box" style="margin-bottom: 0; min-height: 100%; position: relative;">
+        <div class="premium-card" style="margin-bottom: 0; min-height: 100%; position: relative;">
             <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
             
             <div class="flex-center" style="margin-bottom: 20px;">
