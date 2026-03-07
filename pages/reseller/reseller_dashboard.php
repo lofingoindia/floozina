@@ -496,11 +496,17 @@ $announcements = get_announcements($pdo, 'reseller');
 
 <!-- MOBILE DASHBOARD -->
 <style>
+@media (max-width: 767px) {
+    .topbar { display: none !important; }
+    .main { padding: 0 !important; padding-bottom: 20px !important; }
+    .sidebar { display: none !important; }
+}
+
 .mobile-dashboard {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: #ffffff;
     min-height: 100vh;
-    padding-bottom: 80px; /* space for bottom nav if any */
+    padding-bottom: 100px; /* space for bottom nav if any */
 }
 
 /* Header */
@@ -771,27 +777,121 @@ $announcements = get_announcements($pdo, 'reseller');
 .md-ann-title { font-size: 14px; font-weight: 700; margin: 0 0 4px; color: #333; }
 .md-ann-desc { font-size: 12px; color: #666; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* Bottom Nav (Mock) */
-.md-bottom-nav {
+/* Bottom Nav Custom */
+.md-bottom-wrap {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+}
+.md-fab-plus {
+    width: 54px; height: 54px;
+    border-radius: 50%;
     background: #333;
-    border-radius: 30px;
+    border: 2px solid rgba(255,255,255,0.15);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s;
+}
+.md-nav-pill {
+    background: #333;
+    border-radius: 40px;
     display: flex;
     padding: 8px 16px;
-    gap: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    z-index: 100;
+    gap: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    align-items: center;
 }
 .md-nav-item {
     width: 44px; height: 44px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 20px; text-decoration: none;
+    color: white; font-size: 22px; text-decoration: none;
+    opacity: 0.6;
+    transition: all 0.2s;
 }
-.md-nav-item.active { background: rgba(255,255,255,0.2); }
+.md-nav-item.active { opacity: 1; background: rgba(255,255,255,0.2); }
+
+/* Fab menu overlay */
+.md-fab-menu {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    align-items: center;
+    visibility: hidden; opacity: 0; transition: visibility 0s 0.3s, opacity 0.3s;
+}
+.md-fab-menu.show {
+    visibility: visible; opacity: 1; transition: opacity 0.3s;
+}
+.md-fab-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+}
+.md-fab-options {
+    position: relative; margin-bottom: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 25px;
+    display: flex; gap: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.md-fab-menu.show .md-fab-options {
+    transform: translateY(0);
+}
+.md-fab-close {
+    position: absolute; top: -15px; right: -15px;
+    background: #e2e8f0; color: #333;
+    width: 32px; height: 32px; border-radius: 50%; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px;
+    z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.md-fab-opt {
+    display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; color: white;
+}
+.md-fab-icon {
+    width: 60px; height: 60px; border-radius: 16px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center; font-size: 26px;
+}
+.md-fab-opt span { font-size: 13px; font-weight: 600; white-space: nowrap; }
+
+/* Profile Menu */
+.md-profile-menu {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    align-items: center;
+    visibility: hidden; opacity: 0; transition: visibility 0s 0.3s, opacity 0.3s;
+}
+.md-profile-menu.show {
+    visibility: visible; opacity: 1; transition: opacity 0.3s;
+}
+.md-profile-options {
+    position: relative; margin-bottom: 120px;
+    background: #fff; color: #333;
+    border-radius: 20px; padding: 25px; width: 80%; max-width: 320px;
+    display: flex; flex-direction: column; gap: 15px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.md-profile-menu.show .md-profile-options { transform: translateY(0); }
+.md-profile-header {
+    text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 5px;
+}
+.md-profile-header h3 { margin: 0 0 5px 0; font-size: 18px; }
+.md-profile-header p { margin: 0; font-size: 13px; color: #666; }
+.md-profile-btn {
+    display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px;
+    text-decoration: none; color: #333; font-weight: 600; font-size: 15px; background: #f8f9fa;
+}
+.md-profile-btn.logout { color: #dc3545; background: rgba(220,53,69,0.1); }
 </style>
 
 <div class="mobile-dashboard">
@@ -997,12 +1097,55 @@ $announcements = get_announcements($pdo, 'reseller');
 
     </div>
     
-    <!-- Fix dummy bottom nav just for presentation matches screenshot -->
-    <div class="md-bottom-nav">
-        <a href="?page=reseller_dashboard" class="md-nav-item active"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
-        <a href="?page=reseller_users" class="md-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
-        <a href="?page=reseller_billing" class="md-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></a>
-        <a href="?page=reseller_announcements" class="md-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></a>
+    <!-- Bottom Nav Wrap as per screenshot -->
+    <div class="md-bottom-wrap">
+        <div class="md-fab-plus" onclick="document.getElementById('fab-menu').classList.add('show')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div class="md-nav-pill">
+            <a href="?page=reseller_dashboard" class="md-nav-item active"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 3l8 6v12h-5v-7h-6v7H4V9l8-6z"/></svg></a>
+            <a href="?page=reseller_users" class="md-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></a>
+            <a href="?page=reseller_assign" class="md-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></a>
+            <a href="javascript:void(0)" onclick="document.getElementById('profile-menu').classList.add('show')" class="md-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></a>
+        </div>
+    </div>
+
+    <!-- Fab Menu Overlay -->
+    <div class="md-fab-menu" id="fab-menu">
+        <div class="md-fab-overlay" onclick="document.getElementById('fab-menu').classList.remove('show')"></div>
+        <div class="md-fab-options">
+            <button class="md-fab-close" onclick="document.getElementById('fab-menu').classList.remove('show')"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <a href="?page=reseller_bulk_delete" class="md-fab-opt">
+                <div class="md-fab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg></div>
+                <span>Bulk Delete</span>
+            </a>
+            <a href="?page=reseller_bulk_history" class="md-fab-opt">
+                <div class="md-fab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                <span>Bulk History</span>
+            </a>
+            <a href="?page=reseller_announcements" class="md-fab-opt">
+                <div class="md-fab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
+                <span>Announcement</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Profile Menu Overlay -->
+    <div class="md-profile-menu" id="profile-menu">
+        <div class="md-fab-overlay" onclick="document.getElementById('profile-menu').classList.remove('show')"></div>
+        <div class="md-profile-options">
+            <button class="md-fab-close" onclick="document.getElementById('profile-menu').classList.remove('show')"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <div class="md-profile-header">
+                <h3><?= e($_SESSION['username']) ?></h3>
+                <p>Reseller Account</p>
+            </div>
+            <!-- Logout form trigger wrapper -->
+            <form method="POST" id="mobile-logout-form" style="display:none;"><input type="hidden" name="action" value="logout"></form>
+            <a href="javascript:void(0)" onclick="document.getElementById('mobile-logout-form').submit();" class="md-profile-btn logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Logout
+            </a>
+        </div>
     </div>
 </div>
 
