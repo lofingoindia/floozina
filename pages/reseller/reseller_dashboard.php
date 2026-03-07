@@ -1109,25 +1109,29 @@ $announcements = get_announcements($pdo, 'reseller');
             <?php endif; ?>
         </div>
 
-        <!-- Table Performance (Recent Transactions) -->
-        <div class="md-table-perf">
-            <h3 class="md-tp-title">Recent Transactions</h3>
-            <div class="md-tp-cards">
-                <?php foreach ($recent_transactions as $index => $t): ?>
-                <div class="md-tp-card">
-                    <div class="md-tp-num"><?= $index + 1 ?></div>
-                    <div class="md-tp-stat"><?= e(ucfirst($t['type'])) ?></div>
-                    <div class="md-tp-val" style="color: <?= $t['type'] === 'payment' ? '#4ade80' : ($t['type'] === 'charge' ? '#fbbf24' : '#60a5fa') ?>">
-                        <?= $t['type'] === 'payment' ? '+' : '-' ?>$<?= money_fmt($t['amount']) ?>
-                    </div>
-                    <!-- Icon backdrop -->
-                    <div class="md-tp-img"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <!-- Recent Transactions -->
+        <h3 class="md-section-title">Recent Transactions</h3>
+        <div class="md-h-scroll">
+            <?php foreach ($recent_transactions as $t): ?>
+            <div class="md-item-card">
+                <div class="md-item-img" style="background: linear-gradient(45deg, #373334, #2b2829)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.3; color:white;"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
-                <?php endforeach; ?>
-                <?php if(empty($recent_transactions)): ?>
-                    <div style="opacity: 0.5; font-size: 13px;">No recent transactions.</div>
-                <?php endif; ?>
+                <div class="md-item-info">
+                    <h4 class="md-item-title"><?= e(ucfirst($t['type'])) ?></h4>
+                    <div class="md-item-subtitle">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <?= e($t['description']) ?></span>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <?= date('M j, Y', strtotime($t['created_at'])) ?></span>
+                        <span class="status-badge-inline" style="color: <?= $t['type'] === 'payment' ? '#4ade80' : ($t['type'] === 'charge' ? '#fbbf24' : '#60a5fa') ?>; font-weight:700;">
+                            <?= $t['type'] === 'payment' ? '+' : '-' ?>$<?= money_fmt($t['amount']) ?>
+                        </span>
+                    </div>
+                </div>
             </div>
+            <?php endforeach; ?>
+            <?php if(empty($recent_transactions)): ?>
+                <div style="padding: 20px; text-align: center; width: 100%; color: #999;">No recent transactions</div>
+            <?php endif; ?>
         </div>
         
         <!-- Announcements mapped as list if more than 1 -->
