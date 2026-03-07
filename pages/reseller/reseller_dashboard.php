@@ -738,25 +738,32 @@ $announcements = get_announcements($pdo, 'reseller');
 }
 .md-h-scroll::-webkit-scrollbar { display: none; }
 .md-item-card {
-    min-width: 140px;
+    min-width: 170px;
     background: #392842;
     border-radius: 16px;
-    padding: 4px;
+    padding: 6px;
     color: white;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 .md-item-img {
-    height: 100px;
+    height: 80px;
     background: linear-gradient(45deg, #184c4e, #1b6859);
     border-radius: 12px;
-    margin-bottom: 8px;
     display: flex; align-items: center; justify-content: center; font-size: 32px;
 }
 .md-item-info {
-    padding: 4px 8px 8px;
+    padding: 0 6px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
-.md-item-title { font-size: 14px; font-weight: 700; margin: 0 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.md-item-subtitle { font-size: 11px; opacity: 0.6; display: flex; justify-content: space-between; }
+.md-item-title { font-size: 15px; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.md-item-subtitle { font-size: 12px; display: flex; flex-direction: column; gap: 4px; }
+.md-item-subtitle span { display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.8; }
+.md-item-subtitle span.status-badge-inline { opacity: 1; margin-top: 2px; }
 
 /* Order Analytics (Usage Overview) */
 .md-analytics {
@@ -1062,11 +1069,12 @@ $announcements = get_announcements($pdo, 'reseller');
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.3; color:white;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 </div>
                 <div class="md-item-info">
-                    <h4 class="md-item-title"><?= e(explode('@', $u['email'])[0]) ?></h4>
+                    <h4 class="md-item-title"><?= e($u['email']) ?></h4>
                     <div class="md-item-subtitle">
-                        <span><?= e($u['product_profile'] ?: 'No App') ?></span>
-                        <span style="color: <?= $status_color ?>; font-weight:700;">
-                            <?= $is_expired ? 'Expired' : 'Active' ?>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <?= e($u['product_profile'] ?: 'No App') ?></span>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <?= !empty($u['expires_at']) ? date('M j, Y', strtotime($u['expires_at'])) : 'N/A' ?></span>
+                        <span class="status-badge-inline" style="color: <?= $status_color ?>; font-weight:700;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="8"/></svg> <?= $is_expired ? 'Expired' : 'Active' ?>
                         </span>
                     </div>
                 </div>
