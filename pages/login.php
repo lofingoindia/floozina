@@ -1,436 +1,247 @@
 <?php
 layout_header("Login - {$APP_NAME}", $flash_success, $flash_error);
 ?>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --secondary: #3b82f6;
+  --background: #f0f7ff;
+  --surface: #ffffff;
+  --error: #dc2626;
+  --success: #16a34a;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border: #cbd5e1;
+  --border-dark: #94a3b8;
+}
 
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background-color: #0b1730;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e2e8f0;
-    position: relative;
-    overflow: hidden;
-  }
+body {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
 
-  /* --- Background decorative shapes --- */
-  .bg-shapes {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
+.login-container {
+  width: 100%;
+  max-width: 380px;
+  padding: 15px;
+  animation: fadeIn 0.5s ease-out;
+}
 
-  .bg-shape {
-    position: absolute;
-    border-radius: 50%;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  /* Large circle — top right */
-  .bg-s1 {
-    width: 520px;
-    height: 520px;
-    top: -180px;
-    right: -160px;
-    background: #162448;
-    border-radius: 50%;
-  }
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border: 1px solid var(--border);
+}
 
-  /* Medium circle — bottom left */
-  .bg-s2 {
-    width: 340px;
-    height: 340px;
-    bottom: -110px;
-    left: -90px;
-    background: #162448;
-    border-radius: 50%;
-  }
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-  /* Small filled square — top left area */
-  .bg-s3 {
-    width: 100px;
-    height: 100px;
-    top: 15%;
-    left: 7%;
-    background: #1e3360;
-    border-radius: 18px;
-    transform: rotate(22deg);
-  }
+.logo i {
+  font-size: 40px;
+  color: var(--primary);
+}
 
-  /* Tiny circle — centre bottom */
-  .bg-s4 {
-    width: 60px;
-    height: 60px;
-    bottom: 18%;
-    right: 14%;
-    background: #1e3360;
-    border-radius: 50%;
-  }
+.logo h1 {
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 8px 0 3px;
+}
 
-  /* Outline ring — mid left */
-  .bg-s5 {
-    width: 200px;
-    height: 200px;
-    top: 42%;
-    left: -70px;
-    border: 18px solid #162448;
-    background: transparent;
-    border-radius: 50%;
-  }
+.logo p {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: 0;
+}
 
-  /* Outline ring — top right inner */
-  .bg-s6 {
-    width: 140px;
-    height: 140px;
-    top: 8%;
-    right: 22%;
-    border: 12px solid #162448;
-    background: transparent;
-    border-radius: 50%;
-  }
+.form-group { margin-bottom: 16px; }
 
-  /* Thin horizontal bar — decorative line bottom */
-  .bg-bar {
-    position: absolute;
-    width: 180px;
-    height: 4px;
-    bottom: 12%;
-    left: 18%;
-    background: #1e3360;
-    border-radius: 2px;
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-  .page-wrapper {
-    width: 100%;
-    max-width: 460px;
-    padding: 24px 16px;
-    position: relative;
-    z-index: 1;
-  }
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  background: var(--background);
+  color: var(--text-primary);
+}
 
-  /* --- Card --- */
-  .card {
-    background: #101f3c;
-    border: 1px solid #1e3360;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: none;
-  }
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
 
-  .card-accent {
-    height: 4px;
-    background: #2563eb;
-  }
+.input-icon { position: relative; }
 
-  .card-body {
-    padding: 36px 40px 32px;
-  }
+.input-icon i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary);
+  font-size: 14px;
+}
 
-  /* --- Branding --- */
-  .brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 28px;
-    text-align: center;
-  }
+.input-icon input { padding-left: 40px; }
 
-  .brand-icon {
-    width: 52px;
-    height: 52px;
-    background: #162448;
-    border: 1px solid #2a4a7f;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 14px;
-    box-shadow: none;
-  }
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
-  .brand-icon i {
-    font-size: 22px;
-    color: #6098f2;
-  }
+.btn-login:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
 
-  .brand-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #f1f5f9;
-    letter-spacing: -0.3px;
-    margin-bottom: 4px;
-  }
+.btn-login:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
 
-  .brand-subtitle {
-    font-size: 13px;
-    color: #7d94b5;
-    font-weight: 400;
-  }
+.flash-message {
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  border-left: 4px solid transparent;
+  font-size: 13px;
+}
 
-  /* --- Alerts --- */
-  .alert {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 11px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-  }
+.flash-message.success {
+  background: #eff6ff;
+  border-left-color: var(--primary);
+  color: #1e40af;
+}
 
-  .alert i { margin-top: 1px; flex-shrink: 0; font-size: 13px; }
+.flash-message.error {
+  background: #fef2f2;
+  border-left-color: var(--error);
+  color: #991b1b;
+}
 
-  .alert-success {
-    background: #0d2b1a;
-    border-color: #1a5c36;
-    color: #4ade80;
-  }
-
-  .alert-error {
-    background: #2b0d0d;
-    border-color: #7f1d1d;
-    color: #fca5a5;
-  }
-
-  /* --- Language switcher --- */
-  .lang-switcher {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    margin-bottom: 24px;
-  }
-
-  .lang-btn {
-    display: inline-block;
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #94b4d8;
-    background: #162448;
-    border: 1px solid #2a4a7f;
-    border-radius: 20px;
-    text-decoration: none;
-    letter-spacing: 0.3px;
-  }
-
-  /* --- Form --- */
-  .form-group {
-    margin-bottom: 18px;
-  }
-
-  .form-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #7d94b5;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 6px;
-  }
-
-  .input-wrap {
-    position: relative;
-  }
-
-  .input-wrap > i {
-    position: absolute;
-    left: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 13px;
-    color: #94a3b8;
-    pointer-events: none;
-  }
-
-  .eye-toggle {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: #4a6080;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-  }
-
-  .form-input {
-    width: 100%;
-    padding: 10px 14px 10px 38px;
-    font-size: 14px;
-    font-family: inherit;
-    color: #e2e8f0;
-    background: #0d1b35;
-    border: 1.5px solid #1e3360;
-    border-radius: 7px;
-    outline: none;
-  }
-
-  .form-input:focus {
-    border-color: #3b7cf4;
-    background: #0d1b35;
-    box-shadow: none;
-    outline: none;
-  }
-
-  /* --- Divider --- */
-  .form-divider {
-    height: 1px;
-    background: #1e3360;
-    margin: 22px 0;
-  }
-
-  /* --- Submit button --- */
-  .btn-submit {
-    width: 100%;
-    padding: 11px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: inherit;
-    color: #ffffff;
-    background: #2563eb;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    letter-spacing: 0.2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .btn-submit:disabled {
-    background: #94a3b8;
-    cursor: not-allowed;
-  }
-
-  /* --- Footer --- */
-  .card-footer {
-    padding: 14px 40px;
-    background: #0d1b35;
-    border-top: 1px solid #1e3360;
-    text-align: center;
-    font-size: 12px;
-    color: #4a6080;
-  }
+.footer-text {
+  text-align: center;
+  margin-top: 16px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
 </style>
 
-<div class="bg-shapes">
-  <div class="bg-shape bg-s1"></div>
-  <div class="bg-shape bg-s2"></div>
-  <div class="bg-shape bg-s3"></div>
-  <div class="bg-shape bg-s4"></div>
-  <div class="bg-shape bg-s5"></div>
-  <div class="bg-shape bg-s6"></div>
-  <div class="bg-bar"></div>
-</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<div class="page-wrapper">
+<div class="login-container">
   <div class="card">
-    <div class="card-accent"></div>
-
-    <div class="card-body">
-
-      <div class="brand">
-        <div class="brand-icon">
-          <i class="fas fa-shield-halved"></i>
-        </div>
-        <div class="brand-title"><?= e(t('Welcome Back')) ?></div>
-        <div class="brand-subtitle"><?= e(t('Sign in to your account to continue')) ?></div>
-      </div>
-
-      <?php if ($flash_success): ?>
-        <div class="alert alert-success">
-          <i class="fas fa-circle-check"></i>
-          <span><?= e($flash_success) ?></span>
-        </div>
-      <?php endif; ?>
-
-      <?php if ($flash_error): ?>
-        <div class="alert alert-error">
-          <i class="fas fa-circle-exclamation"></i>
-          <span><?= e($flash_error) ?></span>
-        </div>
-      <?php endif; ?>
-
-      <div class="lang-switcher">
-        <a class="lang-btn" href="?lang=en">EN</a>
-        <a class="lang-btn" href="?lang=ar">عربي</a>
-      </div>
-
-      <form method="post" id="loginForm">
-        <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-        <input type="hidden" name="action" value="login">
-
-        <div class="form-group">
-          <label class="form-label" for="username"><?= e(t('Username')) ?></label>
-          <div class="input-wrap">
-            <i class="fas fa-user"></i>
-            <input class="form-input" type="text" id="username" name="username" required autofocus>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="password"><?= e(t('Password')) ?></label>
-          <div class="input-wrap">
-            <i class="fas fa-lock"></i>
-            <input class="form-input" type="password" id="password" name="password" required style="padding-right:38px">
-            <button type="button" class="eye-toggle" id="eyeToggle" tabindex="-1" aria-label="Toggle password visibility">
-              <i class="fas fa-eye" id="eyeIcon"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="form-divider"></div>
-
-        <button type="submit" class="btn-submit" id="submitBtn">
-          <i class="fas fa-arrow-right-to-bracket"></i>
-          <?= e(t('Sign In')) ?>
-        </button>
-      </form>
-
+    
+    <div class="logo">
+      <i class="fas fa-shield-alt"></i>
+      <h1><?= e(t('Welcome Back')) ?></h1>
+      <p><?= e(t('Sign in to your account')) ?></p>
     </div>
 
-    <div class="card-footer">
-      &copy; <?= date('Y') ?> <?= e($APP_NAME) ?> &mdash; <?= e(t('All rights reserved')) ?>
+    <?php if ($flash_success): ?>
+      <div class="flash-message success">
+        <i class="fas fa-check-circle"></i>
+        <?= e($flash_success) ?>
+      </div>
+    <?php endif; ?>
+    
+    <?php if ($flash_error): ?>
+      <div class="flash-message error">
+        <i class="fas fa-exclamation-circle"></i>
+        <?= e($flash_error) ?>
+      </div>
+    <?php endif; ?>
+
+    <div style="display:flex;gap:8px;justify-content:center;margin:0 0 14px 0;flex-wrap:wrap">
+      <a class="btn-login" style="width:auto;padding:8px 12px;font-size:13px;letter-spacing:.4px;text-transform:none" href="?lang=en">EN</a>
+      <a class="btn-login" style="width:auto;padding:8px 12px;font-size:13px;letter-spacing:.4px;text-transform:none" href="?lang=ar">عربي</a>
+    </div>
+
+    <form method="post" id="loginForm">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <input type="hidden" name="action" value="login">
+      
+      <div class="form-group">
+        <label for="username"><?= e(t('Username')) ?></label>
+        <div class="input-icon">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" name="username" required autofocus>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password"><?= e(t('Password')) ?></label>
+        <div class="input-icon">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" name="password" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="submitBtn">
+        <i class="fas fa-sign-in-alt"></i> <?= e(t('Sign in')) ?>
+      </button>
+    </form>
+
+    <div class="footer-text">
+      <i class="far fa-copyright"></i> <?= date('Y') ?> <?= $APP_NAME ?>
     </div>
   </div>
 </div>
 
 <script>
-document.getElementById('loginForm').addEventListener('submit', function() {
+document.getElementById('loginForm').addEventListener('submit', function(e) {
   const btn = document.getElementById('submitBtn');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?= e(t('Signing In...','جاري تسجيل الدخول...')) ?>';
   btn.disabled = true;
 });
-
-document.getElementById('eyeToggle').addEventListener('click', function() {
-  const input = document.getElementById('password');
-  const icon  = document.getElementById('eyeIcon');
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.classList.replace('fa-eye', 'fa-eye-slash');
-  } else {
-    input.type = 'password';
-    icon.classList.replace('fa-eye-slash', 'fa-eye');
-  }
-});
 </script>
 
 <?php
-layout_footer();
+layout_footer(); 
 exit;
 ?>
