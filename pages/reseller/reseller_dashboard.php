@@ -85,6 +85,27 @@ $announcements = get_announcements($pdo, 'reseller');
 .premium-dashboard .flex-between { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
 .premium-dashboard .flex-center { display: flex; align-items: center; gap: 10px; }
 
+/* Animated Blue Gradient Background */
+.premium-dashboard .gradient-blue-box {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    background-size: 200% 200%;
+    animation: gradientMove 6s ease infinite, fadeUp 0.6s ease backwards;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 8px 30px rgba(30, 58, 138, 0.2);
+}
+
+.premium-dashboard .gradient-blue-box:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* Status Badges */
 .premium-dashboard .status-badge {
     padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
@@ -283,7 +304,7 @@ $announcements = get_announcements($pdo, 'reseller');
 
     <!-- Quick Actions and Overview Split -->
     <div class="split-row delay-3">
-        <div class="premium-card" style="margin-bottom: 0; min-height: 100%;">
+        <div class="premium-card gradient-blue-box" style="margin-bottom: 0; min-height: 100%;">
             <div class="flex-center" style="margin-bottom: 20px;">
                 <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(250, 204, 21, 0.1); color: #FBBF24; border-color: rgba(250, 204, 21, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                 <h3 style="font-size: 18px;">Quick Actions</h3>
@@ -305,7 +326,7 @@ $announcements = get_announcements($pdo, 'reseller');
             </div>
         </div>
         
-        <div class="premium-card" style="margin-bottom: 0; min-height: 100%; position: relative;">
+        <div class="premium-card gradient-blue-box" style="margin-bottom: 0; min-height: 100%; position: relative;">
             <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
             
             <div class="flex-center" style="margin-bottom: 20px;">
