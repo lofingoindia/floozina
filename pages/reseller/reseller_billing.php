@@ -19,26 +19,68 @@ $stmt->execute([$rid]);
 $active = (int)$stmt->fetchColumn();
 ?>
 
+<!-- Billing Page Styles -->
+<style>
+  .billing-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .billing-stat {
+    padding: 14px;
+    background: var(--surface-2);
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-1);
+  }
+  .billing-stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .billing-stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-1);
+    margin-top: 4px;
+  }
+  .billing-info {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 8px;
+  }
+  @media (max-width: 600px) {
+    .billing-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .billing-stat { padding: 12px; }
+    .billing-stat-value { font-size: 18px; }
+  }
+</style>
+
 <div class="card">
   <h3>Billing</h3>
-  <div class="row">
-    <div class="col">
-      <div class="muted">Monthly Rate</div>
-      <h3>$<?= money_fmt($r['monthly_rate'] ?? 0) ?></h3>
+  <div class="billing-stats">
+    <div class="billing-stat">
+      <div class="billing-stat-label">Monthly Rate</div>
+      <div class="billing-stat-value">$<?= money_fmt($r['monthly_rate'] ?? 0) ?></div>
     </div>
-    <div class="col">
-      <div class="muted">Total Billed</div>
-      <h3>$<?= money_fmt($r['total_billed'] ?? 0) ?></h3>
+    <div class="billing-stat">
+      <div class="billing-stat-label">Total Billed</div>
+      <div class="billing-stat-value">$<?= money_fmt($r['total_billed'] ?? 0) ?></div>
     </div>
-    <div class="col">
-      <div class="muted">Total Paid</div>
-      <h3>$<?= money_fmt($r['total_paid'] ?? 0) ?></h3>
+    <div class="billing-stat">
+      <div class="billing-stat-label">Total Paid</div>
+      <div class="billing-stat-value">$<?= money_fmt($r['total_paid'] ?? 0) ?></div>
     </div>
-    <div class="col">
-      <div class="muted">Balance</div>
-      <h3>$<?= money_fmt($r['balance'] ?? 0) ?></h3>
+    <div class="billing-stat">
+      <div class="billing-stat-label">Balance</div>
+      <div class="billing-stat-value" style="color:var(--<?= ($r['balance'] ?? 0) < 0 ? 'danger' : 'success' ?>)">
+        $<?= money_fmt($r['balance'] ?? 0) ?>
+      </div>
     </div>
   </div>
-
-  <p class="muted small">Active Users (not expired): <?= (int)$active ?></p>
+  <div class="billing-info">Active Users (not expired): <?= (int)$active ?></div>
 </div>

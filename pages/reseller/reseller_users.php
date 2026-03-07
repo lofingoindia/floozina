@@ -47,115 +47,164 @@ function user_refund_status(PDO $pdo, int $rid, array $u): array {
 }
 ?>
 
-<div class="card">
-  <h3>My Users (latest 500)</h3>
+<!-- Users Page Styles -->
+<style>
+  .users-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .users-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-1);
+    margin: 0;
+  }
+  .users-search {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .users-search input {
+    min-width: 200px;
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+  .users-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
+  .sel-count {
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  /* Table cell labels for mobile */
+  td[data-label]:not(:first-child)::before {
+    content: attr(data-label);
+  }
+  @media (max-width: 600px) {
+    .users-header { flex-direction: column; align-items: stretch; }
+    .users-search { width: 100%; }
+    .users-search input { min-width: auto; flex: 1; }
+    .users-actions { flex-wrap: wrap; }
+  }
+</style>
 
-  
-  <form method="get" style="margin:10px 0; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-    <input type="hidden" name="page" value="reseller_users">
-    <input type="text" name="q" value="<?= e($q) ?>" placeholder="Search email or profile..." style="min-width:260px;">
-    <button class="btn" type="submit">Search</button>
-    <?php if ($q !== ''): ?>
-      <a class="btn btn-secondary" href="?page=reseller_users">Clear</a>
-    <?php endif; ?>
-  </form>
+<div class="card">
+  <div class="users-header">
+    <h3 class="users-title">My Users (latest 500)</h3>
+    <form method="get" class="users-search">
+      <input type="hidden" name="page" value="reseller_users">
+      <input type="text" name="q" value="<?= e($q) ?>" placeholder="Search email or profile...">
+      <button class="btn" type="submit">Search</button>
+      <?php if ($q !== ''): ?>
+        <a class="btn" href="?page=reseller_users">Clear</a>
+      <?php endif; ?>
+    </form>
+  </div>
 
 <?php if ($status === 'suspended'): ?>
     <div class="err">Your account is suspended. You can view users but actions are disabled.</div>
   <?php endif; ?>
 
-  <!-- Bulk Delete Form (NO table inside, to avoid nested forms) -->
+  <!-- Bulk Delete Form -->
   <form id="bulkDeleteForm" method="post" onsubmit="return confirm_bulk_delete();" style="margin:0;">
     <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
     <input type="hidden" name="action" value="reseller_bulk_delete_users">
     <input type="hidden" name="remove_from_org" value="1">
   </form>
 
-  <div style="display:flex;gap:10px;align-items:center;justify-content:flex-end;margin:8px 0 12px;">
+  <div class="users-actions">
     <button class="btn btn-danger" type="submit" form="bulkDeleteForm" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
       Delete Selected
     </button>
-    <span id="selCount" class="small muted">0 selected</span>
+    <span id="selCount" class="sel-count">0 selected</span>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th style="width:38px;">
-          <input type="checkbox" id="select_all" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
-        </th>
-        <th>Email</th>
-        <th>Profile(Group)</th>
-        <th>Expires</th>
-        <th>Refund</th>
-        <th>Extend</th>
-        <th>Status</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php if (!$users || count($users) === 0): ?>
-        <tr><td colspan="8" class="small muted">No users found.</td></tr>
-      <?php else: ?>
-        <?php foreach ($users as $u):
-          $st = (string)($u['status'] ?? '');
-          $badge='b-success';
-          if ($st==='expiring') $badge='b-warning';
-          if ($st==='expired')  $badge='b-danger';
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:38px;">
+            <input type="checkbox" id="select_all" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
+          </th>
+          <th>Email</th>
+          <th>Profile</th>
+          <th>Expires</th>
+          <th>Refund</th>
+          <th>Extend</th>
+          <th>Status</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (!$users || count($users) === 0): ?>
+          <tr><td colspan="8" style="color:var(--text-3);text-align:center">No users found.</td></tr>
+        <?php else: ?>
+          <?php foreach ($users as $u):
+            $st = (string)($u['status'] ?? '');
+            $badge='b-success';
+            if ($st==='expiring') $badge='b-warning';
+            if ($st==='expired')  $badge='b-danger';
 
-          // Refund badge
-          [$refundLabel, $refundClass] = user_refund_status($pdo, $rid, $u);
-          $uid = (int)($u['id'] ?? 0);
-        ?>
-          <tr>
-            <td>
-              <!-- IMPORTANT: checkbox belongs to bulkDeleteForm via form attr -->
-              <input
-                type="checkbox"
-                class="user_cb"
-                name="user_ids[]"
-                value="<?= $uid ?>"
-                form="bulkDeleteForm"
-                <?= ($status === 'suspended') ? 'disabled' : '' ?>
-              >
-            </td>
+            // Refund badge
+            [$refundLabel, $refundClass] = user_refund_status($pdo, $rid, $u);
+            $uid = (int)($u['id'] ?? 0);
+          ?>
+            <tr>
+              <td data-label="">
+                <input
+                  type="checkbox"
+                  class="user_cb"
+                  name="user_ids[]"
+                  value="<?= $uid ?>"
+                  form="bulkDeleteForm"
+                  <?= ($status === 'suspended') ? 'disabled' : '' ?>
+                >
+              </td>
 
-            <td><?= e((string)($u['email'] ?? '')) ?></td>
-            <td class="small"><?= e((string)($u['product_profile'] ?? '')) ?></td>
-            <td><?= e((string)($u['expires_at'] ?? '')) ?></td>
+              <td data-label="Email"><?= e((string)($u['email'] ?? '')) ?></td>
+              <td data-label="Profile"><?= e((string)($u['product_profile'] ?? '')) ?></td>
+              <td data-label="Expires"><?= e((string)($u['expires_at'] ?? '')) ?></td>
 
-            <td>
-              <span class="badge <?= e($refundClass) ?>"><?= e($refundLabel) ?></span>
-            </td>
+              <td data-label="Refund">
+                <span class="badge <?= e($refundClass) ?>"><?= e($refundLabel) ?></span>
+              </td>
 
-            <td>
-              <!-- Extend: separate form (no longer nested) -->
-              <form method="post" style="display:flex;gap:6px;align-items:center">
-                <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-                <input type="hidden" name="action" value="reseller_extend_user">
-                <input type="hidden" name="user_id" value="<?= $uid ?>">
-                <input name="expires_at" type="date" style="width:160px" value="<?= e(!empty($u['expires_at']) ? date('Y-m-d', strtotime((string)$u['expires_at'].' +1 month')) : date('Y-m-d', strtotime('+1 month'))) ?>" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
-                <button class="btn btn-primary" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Extend</button>
-              </form>
-            </td>
+              <td data-label="Extend">
+                <form method="post" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+                  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+                  <input type="hidden" name="action" value="reseller_extend_user">
+                  <input type="hidden" name="user_id" value="<?= $uid ?>">
+                  <input name="expires_at" type="date" style="width:130px;padding:5px 8px;font-size:12px" value="<?= e(!empty($u['expires_at']) ? date('Y-m-d', strtotime((string)$u['expires_at'].' +1 month')) : date('Y-m-d', strtotime('+1 month'))) ?>" <?= ($status === 'suspended') ? 'disabled' : '' ?>>
+                  <button class="btn btn-primary btn-sm" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>+</button>
+                </form>
+              </td>
 
-            <td><span class="badge <?= $badge ?>"><?= e($st) ?></span></td>
+              <td data-label="Status"><span class="badge <?= $badge ?>"><?= e($st) ?></span></td>
 
-            <td>
-              <!-- Delete single user: separate form (no longer nested) -->
-              <form method="post" onsubmit="return confirm('Delete from Adobe/Console + delete locally + refund charge (if eligible)?');">
-                <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-                <input type="hidden" name="action" value="reseller_delete_user">
-                <input type="hidden" name="user_id" value="<?= $uid ?>">
-                <input type="hidden" name="remove_from_org" value="1">
-                <button class="btn btn-danger" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>Delete</button>
-              </form>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      <?php endif; ?>
-    </tbody>
-  </table>
+              <td data-label="">
+                <form method="post" onsubmit="return confirm('Delete user from Adobe + locally?');">
+                  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+                  <input type="hidden" name="action" value="reseller_delete_user">
+                  <input type="hidden" name="user_id" value="<?= $uid ?>">
+                  <input type="hidden" name="remove_from_org" value="1">
+                  <button class="btn btn-danger btn-sm" type="submit" <?= ($status === 'suspended') ? 'disabled' : '' ?>>X</button>
+                </form>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>

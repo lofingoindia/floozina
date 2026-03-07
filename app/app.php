@@ -4205,6 +4205,36 @@ function layout_header(string $title, ?string $flash_success, ?string $flash_err
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover td { background: var(--surface-2); }
 
+    /* Mobile responsive tables - card layout */
+    @media (max-width: 600px) {
+      .table-wrap { border: 1px solid var(--border-1); border-radius: var(--r-lg); overflow: hidden; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      tbody tr { border-bottom: 1px solid var(--border-1); padding: 10px 12px; }
+      tbody tr:last-child { border-bottom: none; }
+      tbody tr:hover td { background: transparent; }
+      tbody tr:hover { background: var(--surface-2); }
+      td { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        padding: 6px 0 !important; 
+        border: none !important;
+        text-align: right;
+      }
+      td::before {
+        content: attr(data-label);
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: var(--text-3);
+        text-align: left;
+      }
+      td:first-child { font-weight: 600; color: var(--text-1); }
+      td:first-child::before { display: none; }
+    }
+
     /* ─────────────────────────────────────────
        ALERTS
     ───────────────────────────────────────── */

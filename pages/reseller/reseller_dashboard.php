@@ -89,125 +89,116 @@ $ann_icons = [
 ?>
 
 <!-- ═══════════════════════════════════════
-     DASHBOARD STYLES (scoped to this page)
+     DASHBOARD STYLES (scoped to this page) - MINIMAL
 ════════════════════════════════════════ -->
 <style>
-  /* KPI grid */
+  /* KPI grid - Minimal */
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
-  /* Welcome bar */
+  /* Welcome bar - Minimal */
   .welcome-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    padding: 20px 22px;
+    padding: 16px 18px;
     background: var(--surface-1);
     border: 1px solid var(--border-1);
-    border-radius: var(--r-xl);
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
+    border-radius: var(--r-lg);
+    margin-bottom: 20px;
   }
-  .welcome-bar::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--brand), var(--brand-hover), #a78bfa);
-  }
-  .welcome-name { font-size: 18px; font-weight: 700; color: var(--text-1); }
-  .welcome-date { font-size: 13px; color: var(--text-3); margin-top: 3px; }
-  .welcome-badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .welcome-name { font-size: 16px; font-weight: 600; color: var(--text-1); }
+  .welcome-date { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .welcome-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
-  /* Quick actions */
+  /* Quick actions - Minimal */
   .qa-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
   .qa-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 16px 10px;
+    padding: 14px 8px;
     background: var(--surface-2);
     border: 1px solid var(--border-1);
-    border-radius: var(--r-lg);
-    color: var(--text-1);
-    font-size: 12px;
-    font-weight: 600;
+    border-radius: var(--r-sm);
+    color: var(--text-2);
+    font-size: 11px;
+    font-weight: 500;
     text-align: center;
     cursor: pointer;
-    transition: background var(--t), border-color var(--t), transform var(--t), box-shadow var(--t), color var(--t);
+    transition: all var(--t);
     text-decoration: none;
   }
   .qa-btn:hover {
-    background: var(--brand-glow);
-    border-color: rgba(99,102,241,.4);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    color: var(--brand-hover);
+    background: var(--brand-subtle);
+    border-color: var(--brand);
+    color: var(--brand);
   }
   .qa-icon {
-    width: 36px; height: 36px;
-    border-radius: var(--r);
-    background: var(--brand-glow);
+    width: 32px; height: 32px;
+    border-radius: var(--r-xs);
+    background: var(--brand-subtle);
     display: flex; align-items: center; justify-content: center;
-    color: var(--brand-hover);
-    transition: background var(--t), color var(--t);
+    color: var(--brand);
+    transition: all var(--t);
   }
-  .qa-btn:hover .qa-icon { background: rgba(99,102,241,.25); color: var(--brand-hover); }
-  .qa-icon svg { width: 18px; height: 18px; stroke: currentColor; }
+  .qa-btn:hover .qa-icon { background: var(--brand); color: #fff; }
+  .qa-icon svg { width: 16px; height: 16px; stroke: currentColor; }
 
-  /* KPI icon override for SVG */
+  /* KPI icon - Minimal */
   .kpi-icon {
-    width: 38px; height: 38px;
-    border-radius: var(--r);
-    background: var(--brand-glow);
+    position: absolute;
+    right: 14px; top: 14px;
+    width: 28px; height: 28px;
+    border-radius: var(--r-xs);
+    background: var(--brand-subtle);
     display: flex; align-items: center; justify-content: center;
-    color: var(--brand-hover);
+    color: var(--brand);
   }
-  .kpi-icon svg { width: 20px; height: 20px; stroke: currentColor; }
+  .kpi-icon svg { width: 14px; height: 14px; stroke: currentColor; }
 
-  /* Section header */
+  /* Section header - Minimal */
   .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     gap: 8px;
     flex-wrap: wrap;
   }
   .section-title {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px; font-weight: 600;
     color: var(--text-1);
     margin: 0;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .section-title svg { color: var(--text-2); }
+  .section-title svg { color: var(--text-3); width: 15px; height: 15px; }
 
-  /* Table inside card */
-  .table-wrap { overflow-x: auto; border-radius: var(--r); }
+  /* Table inside card - Minimal */
+  .table-wrap { overflow-x: auto; }
   .table-wrap table { margin: 0; }
+  .table-wrap th, .table-wrap td { padding: 8px 10px; font-size: 12px; }
 
-  /* Announcement card */
+  /* Announcement card - Minimal */
   .ann-item {
-    padding: 14px 16px;
-    border-radius: var(--r);
+    padding: 12px 14px;
+    border-radius: var(--r-sm);
     border-left: 3px solid var(--brand);
     background: var(--surface-2);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     position: relative;
     transition: background var(--t);
   }
@@ -219,35 +210,39 @@ $ann_icons = [
   .ann-item--danger  { border-left-color: var(--danger); }
   .ann-new-tag {
     position: absolute;
-    top: -7px; right: 14px;
-    font-size: 9px;
+    top: -6px; right: 12px;
+    font-size: 8px;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 99px;
+    padding: 2px 6px;
+    border-radius: 4px;
     background: var(--brand);
     color: #fff;
-    letter-spacing: .06em;
+    letter-spacing: .05em;
   }
   .ann-icon { display: flex; align-items: center; color: inherit; }
-  .ann-icon svg { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; }
-  .ann-title { font-size: 13px; font-weight: 600; color: var(--text-1); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .ann-meta  { font-size: 11px; color: var(--text-2); margin-top: 6px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-  .ann-meta svg { width: 12px; height: 12px; stroke: currentColor; flex-shrink: 0; color: var(--text-2); }
-  .ann-meta-item { display: flex; align-items: center; gap: 4px; }
-  .ann-body  { font-size: 12px; color: var(--text-2); margin-top: 8px; line-height: 1.6; white-space: pre-wrap; }
+  .ann-icon svg { width: 13px; height: 13px; stroke: currentColor; flex-shrink: 0; }
+  .ann-title { font-size: 12px; font-weight: 500; color: var(--text-1); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .ann-meta  { font-size: 10px; color: var(--text-3); margin-top: 4px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .ann-meta svg { width: 11px; height: 11px; stroke: currentColor; flex-shrink: 0; }
+  .ann-meta-item { display: flex; align-items: center; gap: 3px; }
+  .ann-body  { font-size: 11px; color: var(--text-2); margin-top: 6px; line-height: 1.5; white-space: pre-wrap; }
 
   /* Two-col layout */
   .dash-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 14px;
+    margin-bottom: 14px;
   }
   @media (max-width: 860px) { .dash-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 480px) {
-    .kpi-grid { grid-template-columns: 1fr 1fr; }
-    .qa-grid  { grid-template-columns: 1fr 1fr; }
-    .welcome-name { font-size: 15px; }
+  @media (max-width: 520px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .qa-grid  { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .welcome-name { font-size: 14px; }
+    .welcome-bar { padding: 12px 14px; }
+    .kpi-card { padding: 12px 14px; }
+    .kpi-value { font-size: 20px; }
+    .card { padding: 14px; }
   }
 </style>
 
