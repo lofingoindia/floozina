@@ -37,26 +37,21 @@ $announcements = get_announcements($pdo, 'reseller');
 ?>
 
 <style>
-/* Ultra-Premium Monochrome Dashboard Styles */
-:root {
-    --bg-main: #0B0F19;
-    --card-bg: #131826;
-    --card-border: #1E293B;
-    --text-main: #F3F4F6;
+/* Premium Dashboard Styles */
+.premium-dashboard {
+    --bg-main: transparent;
+    --card-bg: #0F141E;
+    --card-border: rgba(255, 255, 255, 0.05);
+    --text-main: #E2E8F0;
     --text-muted: #94A3B8;
     --accent-blue: #3B82F6;
-    --accent-green: #10B981;
-    --accent-red: #EF4444;
-    --accent-yellow: #F59E0B;
-    --radius-lg: 16px;
-    --radius-md: 12px;
-    --transition: all 0.2s ease-in-out;
-}
-
-.premium-dashboard {
+    --accent-blue-glow: rgba(59, 130, 246, 0.15);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
     color: var(--text-main);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    padding-bottom: 40px;
 }
 
 .premium-dashboard .premium-card {
@@ -64,60 +59,57 @@ $announcements = get_announcements($pdo, 'reseller');
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease backwards;
+    margin-bottom: 24px;
 }
 
 .premium-dashboard .premium-card:hover {
-    border-color: #334155;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.08);
 }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
 
 .premium-dashboard .flex-between { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
 .premium-dashboard .flex-center { display: flex; align-items: center; gap: 10px; }
 
 /* Status Badges */
 .premium-dashboard .status-badge {
-    padding: 6px 14px; 
-    border-radius: 20px; 
-    font-size: 13px; 
-    font-weight: 600; 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 8px; 
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
+    padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border: 1px solid transparent;
 }
-.b-glow-blue { color: #60A5FA; background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.2); }
-.b-glow-green { color: #4ADE80; background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.2); }
-.b-glow-red { color: #F87171; background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.2); }
-.b-glow-yellow { color: #FACC15; background: rgba(250, 204, 21, 0.08); border-color: rgba(250, 204, 21, 0.2); }
+.b-glow-blue { background: rgba(59, 130, 246, 0.1); color: #60A5FA; border-color: rgba(59, 130, 246, 0.2); }
+.b-glow-green { background: rgba(74, 222, 128, 0.1); color: #4ADE80; border-color: rgba(74, 222, 128, 0.2); }
+.b-glow-red { background: rgba(248, 113, 113, 0.1); color: #F87171; border-color: rgba(248, 113, 113, 0.2); }
+.b-glow-yellow { background: rgba(250, 204, 21, 0.1); color: #FACC15; border-color: rgba(250, 204, 21, 0.2); }
 
 /* Typography */
 .premium-dashboard .text-muted { color: var(--text-muted); font-size: 14px; }
-.premium-dashboard h2, .premium-dashboard h3 { margin: 0; font-weight: 600; color: #FFFFFF; }
+.premium-dashboard h2, .premium-dashboard h3 { margin: 0; font-weight: 700; color: #FFFFFF; }
+.premium-dashboard .gradient-text {
+    background: linear-gradient(90deg, #FFFFFF, #A5B4FC);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
 
 /* Stats */
 .premium-dashboard .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px; }
-.premium-dashboard .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+.premium-dashboard .stat-icon {
+    width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
 }
-.premium-dashboard .stat-icon-box {
-    width: 48px; height: 48px; 
-    border-radius: 12px; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 20px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
-}
-.stat-icon-blue { background: rgba(59, 130, 246, 0.05); color: #60A5FA; border-color: rgba(59, 130, 246, 0.1); }
-.stat-icon-yellow { background: rgba(250, 204, 21, 0.05); color: #FACC15; border-color: rgba(250, 204, 21, 0.1); }
-.stat-icon-red { background: rgba(248, 113, 113, 0.05); color: #F87171; border-color: rgba(248, 113, 113, 0.1); }
-
-.premium-dashboard .stat-val { font-size: 24px; font-weight: 700; line-height: 1.2; }
-.premium-dashboard .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-weight: 500; }
+.premium-dashboard .stat-val { font-size: 32px; font-weight: 700; margin: 4px 0 0 0; line-height: 1.2; }
 
 /* Grid Layout */
 .premium-dashboard .split-row { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
@@ -125,57 +117,56 @@ $announcements = get_announcements($pdo, 'reseller');
 
 /* Buttons */
 .premium-dashboard .action-btn {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: transparent; 
-    border: 1px solid rgba(255,255,255,0.08); 
-    padding: 12px 16px;
-    border-radius: var(--radius-md); 
-    color: var(--text-main); 
-    text-decoration: none; 
-    font-weight: 600; 
-    font-size: 14px; 
-    transition: var(--transition);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 14px;
+    border-radius: var(--radius-md); color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 14px; transition: var(--transition);
 }
-.premium-dashboard .action-btn:hover { 
-    background: rgba(255,255,255,0.03); 
-    border-color: rgba(255,255,255,0.15); 
-}
-.premium-dashboard .btn-small { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+.premium-dashboard .action-btn:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); box-shadow: 0 4px 15px var(--accent-blue-glow); color: #fff; }
+.premium-dashboard .btn-small { padding: 8px 16px; font-size: 13px; border-radius: 20px; background: rgba(255,255,255,0.05); }
 
 /* Tables */
 .premium-dashboard table { width: 100%; border-collapse: collapse; min-width: 600px; }
 .premium-dashboard th, .premium-dashboard td { padding: 16px 20px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; }
-.premium-dashboard th { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px; padding-bottom: 12px; }
+.premium-dashboard th { background: rgba(0,0,0,0.2); font-size: 12px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
+.premium-dashboard th:first-child, .premium-dashboard td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.premium-dashboard th:last-child, .premium-dashboard td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+.premium-dashboard tbody tr { transition: var(--transition); }
+.premium-dashboard tbody tr:hover td { background: rgba(255,255,255,0.02); }
 .premium-dashboard tbody tr:last-child td { border-bottom: none; }
 
-/* Dashboard Specific Icons */
-.svg-icon { width: 1.2em; height: 1.2em; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+/* Announcements */
+.premium-dashboard .announcement-card {
+    padding: 16px 20px; border-radius: var(--radius-md); position: relative;
+    border: 1px solid transparent; margin-bottom: 12px; transition: var(--transition);
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+.premium-dashboard .announcement-card:hover { transform: translateX(5px); background: rgba(255,255,255,0.04); }
+.premium-dashboard .a-new { position: absolute; top: -8px; right: 16px; background: #3B82F6; color: #fff; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
 
+.a-info { border-left: 3px solid #60A5FA; }
+.a-success { border-left: 3px solid #4ADE80; }
+.a-warning { border-left: 3px solid #FACC15; }
+.a-danger { border-left: 3px solid #F87171; }
 </style>
 
 <div class="premium-dashboard">
 
     <!-- Welcome Section -->
-    <div class="premium-card">
+    <div class="premium-card delay-1" style="background: linear-gradient(135deg, rgba(20,25,38,0.9) 0%, rgba(10,14,23,0.95) 100%); border-color: rgba(59,130,246,0.2); box-shadow: 0 8px 32px var(--accent-blue-glow);">
         <div class="flex-between">
             <div>
-                <h2 style="font-size: 26px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
-                    Welcome back, <?= e($_SESSION['username']) ?>! 
-                    <svg class="svg-icon" style="color: #E2E8F0;" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
-                </h2>
-                <div class="text-muted flex-center" style="font-size: 13px;">
-                    <span style="display:inline-block; width:6px; height:6px; background:#4ADE80; border-radius:50%; margin-right:4px;"></span>
+                <h2 class="gradient-text" style="font-size: 28px; margin-bottom: 6px;">Welcome back, <?= e($_SESSION['username']) ?>! <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-left:4px;"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></h2>
+                <div class="text-muted" style="display:flex; align-items:center; gap:8px;">
+                    <span style="display:inline-block; width:8px; height:8px; background:#4ADE80; border-radius:50%; box-shadow:0 0 10px rgba(74,222,128,0.5);"></span>
                     <?= date('l, F j, Y') ?>
                 </div>
             </div>
             <div class="flex-center">
-                <span class="status-badge b-glow-red">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg>
-                    Balance: $<?= money_fmt($balance) ?>
+                <span class="status-badge <?= $balance >= 0 ? 'b-glow-green' : 'b-glow-red' ?>" style="font-size: 14px; padding: 10px 16px;">
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></span> Balance: $<?= money_fmt($balance) ?>
                 </span>
-                <span class="status-badge b-glow-blue">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    Rate: $<?= money_fmt($monthly_rate) ?>/mo
+                <span class="status-badge b-glow-blue" style="font-size: 14px; padding: 10px 16px;">
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span> Rate: $<?= money_fmt($monthly_rate) ?>/mo
                 </span>
             </div>
         </div>
@@ -183,187 +174,184 @@ $announcements = get_announcements($pdo, 'reseller');
 
     <!-- Announcements -->
     <?php if (!empty($announcements)): ?>
-    <div class="premium-card" style="border: 1px dashed var(--card-border);">
+    <div class="premium-card delay-1">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <svg class="svg-icon" style="color: var(--text-muted)" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
-                <h3 style="font-size: 16px;">Announcements</h3>
+                <div class="stat-icon" style="width: 40px; height: 40px; font-size: 20px; background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: #60A5FA;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+                <h3 style="font-size: 20px;">Announcements & Updates</h3>
             </div>
+            <span class="status-badge b-glow-blue"><?= count($announcements) ?> New</span>
         </div>
         
         <div>
             <?php foreach (array_slice($announcements, 0, 3) as $a): 
+                $a_class = 'a-info';
                 $badge = 'b-glow-blue';
+                $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
                 
-                if ($a['type'] === 'success') { $badge = 'b-glow-green'; }
-                elseif ($a['type'] === 'warning') { $badge = 'b-glow-yellow'; }
-                elseif ($a['type'] === 'danger') { $badge = 'b-glow-red'; }
+                if ($a['type'] === 'success') { $badge = 'b-glow-green'; $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'; $a_class = 'a-success'; }
+                elseif ($a['type'] === 'warning') { $badge = 'b-glow-yellow'; $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'; $a_class = 'a-warning'; }
+                elseif ($a['type'] === 'danger') { $badge = 'b-glow-red'; $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><circle cx="12" cy="12" r="4"/><path d="m12 8 4 4-4 4-4-4z"/></svg>'; $a_class = 'a-danger'; }
+                
+                $is_new = (time() - strtotime($a['created_at'])) < (2 * 24 * 60 * 60);
             ?>
-                <div style="padding: 16px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                <div class="announcement-card <?= $a_class ?>">
+                    <?php if ($is_new): ?>
+                        <span class="a-new">NEW</span>
+                    <?php endif; ?>
+                    
                     <div class="flex-center" style="margin-bottom: 8px;">
-                        <b style="font-size: 15px;"><?= e($a['title']) ?></b>
+                        <span style="font-size:18px"><?= $icon ?></span>
+                        <b style="font-size: 15px; color: #FFFFFF;"><?= e($a['title']) ?></b>
                         <span class="status-badge <?= $badge ?>" style="font-size:10px; padding: 2px 8px;"><?= e($a['type']) ?></span>
                     </div>
                     
-                    <div style="line-height: 1.5; font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
+                    <div style="margin-left: 28px; line-height: 1.6; font-size: 14px; color: var(--text-main); opacity: 0.9; margin-bottom: 12px; white-space: pre-wrap;">
                         <?= e(substr($a['content'], 0, 200)) ?><?= strlen($a['content']) > 200 ? '...' : '' ?>
                     </div>
                     
-                    <div class="text-muted flex-center" style="font-size:12px; gap: 16px;">
-                        <span><?= date('M j, Y', strtotime($a['created_at'])) ?></span>
-                        <span><?= time_elapsed_string($a['created_at']) ?></span>
+                    <div class="text-muted" style="margin-left: 28px; display:flex; gap:16px; font-size:12px;">
+                        <span class="flex-center" style="gap:4px">📅 <?= date('M j, Y', strtotime($a['created_at'])) ?></span>
+                        <span class="flex-center" style="gap:4px">⏱️ <?= time_elapsed_string($a['created_at']) ?></span>
+                        <?php if (!empty($a['expires_at'])): ?>
+                            <span class="flex-center" style="gap:4px; color:#F87171">⏰ Expires <?= date('M j', strtotime($a['expires_at'])) ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
+            
+            <?php if (count($announcements) > 3): ?>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="?page=reseller_announcements" class="action-btn" style="display: inline-flex; background: transparent; border-color: transparent; color: #60A5FA;">
+                    View all <?= count($announcements) ?> announcements →
+                </a>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
     <?php else: ?>
-    <div class="premium-card" style="border: 1px dashed rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; padding: 30px;">
-        <div class="text-muted flex-center" style="font-size: 14px;">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            No announcements at this time. Check back later!
+    <div class="premium-card delay-1" style="border: 1px dashed rgba(255,255,255,0.1); background: transparent; box-shadow: none;">
+        <div class="flex-center" style="justify-content: center; padding: 20px; color: var(--text-muted);">
+            <span style="font-size:24px; opacity:0.5"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+            <p style="margin:0; font-size: 15px;">No announcements at this time. Check back later!</p>
         </div>
     </div>
     <?php endif; ?>
 
     <!-- Stats Grid -->
-    <div class="stats-grid">
+    <div class="stats-grid delay-2">
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
-            <div class="stat-item">
-                <div class="stat-icon-box stat-icon-blue" style="color: #94A3B8; background: rgba(255,255,255,0.03);">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: #A5B4FC; background: rgba(165, 180, 252, 0.1); border-color: rgba(165, 180, 252, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div>
                     <div class="stat-val"><?= $total_users ?></div>
-                    <div class="stat-label">Total Users</div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Total Users</div>
                 </div>
             </div>
         </div>
         
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
-            <div class="stat-item">
-                <div class="stat-icon-box stat-icon-yellow">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </div>
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: #FBBF24; background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
                 <div>
-                    <div class="stat-val" style="color: #FACC15;"><?= $expiring_soon ?></div>
-                    <div class="stat-label">Expiring Soon</div>
+                    <div class="stat-val" style="color: #FBBF24; font-size: 28px;"><?= $expiring_soon ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Expiring Soon</div>
                 </div>
             </div>
         </div>
         
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
-            <div class="stat-item">
-                <div class="stat-icon-box stat-icon-red">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </div>
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: #F87171; background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
                 <div>
-                    <div class="stat-val" style="color: #F87171;"><?= $expired_users ?></div>
-                    <div class="stat-label">Expired</div>
+                    <div class="stat-val" style="color: #F87171; font-size: 28px;"><?= $expired_users ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Expired</div>
                 </div>
             </div>
         </div>
         
         <div class="premium-card" style="padding: 20px; margin-bottom: 0;">
-            <div class="stat-item">
-                <div class="stat-icon-box stat-icon-red">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg>
-                </div>
+            <div class="flex-center" style="gap: 16px;">
+                <div class="stat-icon" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; background: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)' ?>; border-color: <?= $balance >= 0 ? 'rgba(74, 222, 128, 0.2)' : 'rgba(248, 113, 113, 0.2)' ?>;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
                 <div>
-                    <div class="stat-val" style="color: #F87171;">$<?= money_fmt($balance) ?></div>
-                    <div class="stat-label">Current Balance</div>
+                    <div class="stat-val" style="color: <?= $balance >= 0 ? '#4ADE80' : '#F87171' ?>; font-size: 26px;">$<?= money_fmt($balance) ?></div>
+                    <div class="text-muted" style="font-size: 13px; font-weight: 500; margin-top: 4px;">Current Balance</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Actions & Overview -->
-    <div class="split-row">
-        <!-- Quick Actions -->
-        <div class="premium-card" style="margin-bottom: 0;">
-            <div class="flex-center" style="margin-bottom: 24px;">
-                <div class="stat-icon-box stat-icon-yellow" style="width: 32px; height: 32px; border-radius: 50%; font-size: 16px;">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                </div>
-                <h3 style="font-size: 16px;">Quick Actions</h3>
+    <!-- Quick Actions and Overview Split -->
+    <div class="split-row delay-3">
+        <div class="premium-card" style="margin-bottom: 0; min-height: 100%;">
+            <div class="flex-center" style="margin-bottom: 20px;">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(250, 204, 21, 0.1); color: #FBBF24; border-color: rgba(250, 204, 21, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                <h3 style="font-size: 18px;">Quick Actions</h3>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 16px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px;">
                 <a href="?page=reseller_assign" class="action-btn">
-                    <svg class="svg-icon" style="color: var(--text-muted)" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Assign User
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Assign User
                 </a>
                 <a href="?page=reseller_bulk_assign" class="action-btn">
-                    <svg class="svg-icon" style="color: var(--text-muted)" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-                    Bulk Assign
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span> Bulk Assign
                 </a>
                 <a href="?page=reseller_users" class="action-btn">
-                    <svg class="svg-icon" style="color: var(--text-muted)" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    View Users
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> View Users
                 </a>
-                <a href="?page=reseller_billing" class="action-btn" style="justify-content: flex-start; padding-left: 20px;">
-                    <svg class="svg-icon" style="color: var(--text-muted)" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                    Billing
+                <a href="?page=reseller_billing" class="action-btn">
+                    <span style="font-size: 16px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span> Billing
                 </a>
             </div>
         </div>
         
-        <!-- Usage Overview -->
-        <div class="premium-card" style="margin-bottom: 0;">
-            <div class="flex-center" style="margin-bottom: 24px;">
-                <div class="stat-icon-box stat-icon-green" style="width: 32px; height: 32px; border-radius: 50%; font-size: 16px; background: rgba(16, 185, 129, 0.1); color: #10B981;">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                </div>
-                <h3 style="font-size: 16px;">Usage Overview</h3>
+        <div class="premium-card" style="margin-bottom: 0; min-height: 100%; position: relative;">
+            <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+            
+            <div class="flex-center" style="margin-bottom: 20px;">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(16, 185, 129, 0.1); color: #34D399; border-color: rgba(16, 185, 129, 0.2);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                <h3 style="font-size: 18px;">Usage Overview</h3>
             </div>
             
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-                <!-- Active Users -->
-                <div style="padding-bottom: 4px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
-                        <span class="text-muted">Active Users</span>
-                        <span><strong style="color: #10B981; font-weight: 700;"><?= $total_users - $expired_users ?></strong> <span style="color: #10B981; font-size: 12px; opacity: 0.7;">/ <?= $total_users ?></span></span>
-                    </div>
-                    <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-                        <div style="width: <?= $total_users > 0 ? (($total_users - $expired_users)/$total_users)*100 : 0 ?>%; height: 100%; background: #10B981; border-radius: 4px;"></div>
-                    </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <span class="text-muted" style="font-weight: 500;">Active Users</span>
+                    <span style="color:#4ADE80; font-weight:700; font-size: 16px;"><?= $total_users - $expired_users ?> <span style="font-size:12px; opacity:0.6; font-weight:normal;">/ <?= $total_users ?></span></span>
+                </div>
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: -6px; margin-bottom: 6px;">
+                    <div style="width: <?= $total_users > 0 ? (($total_users - $expired_users)/$total_users)*100 : 0 ?>%; height: 100%; background: linear-gradient(90deg, #34D399, #10B981); border-radius: 10px; box-shadow: 0 0 10px rgba(52,211,153,0.5);"></div>
                 </div>
 
-                <!-- Monthly Rate -->
-                <div style="display: flex; justify-content: space-between; font-size: 14px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <span class="text-muted">Monthly Rate</span>
-                    <strong style="color: #60A5FA;">$<?= money_fmt($monthly_rate) ?></strong>
+                <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <span class="text-muted" style="font-weight: 500;">Monthly Rate</span>
+                    <span style="color:#60A5FA; font-weight:700; font-size: 16px;">$<?= money_fmt($monthly_rate) ?></span>
                 </div>
-
-                <!-- Est Monthly Cost -->
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: transparent; border-radius: 8px; border: 1px solid #F59E0B; box-shadow: 0 0 10px rgba(245, 158, 11, 0.05);">
-                    <span style="color: var(--text-main); font-size: 14px; font-weight: 600;">Est. Monthly Cost</span>
-                    <strong style="color: #F59E0B; font-size: 18px;">$<?= money_fmt($total_users * $monthly_rate) ?></strong>
+                <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: linear-gradient(90deg, rgba(251, 191, 36, 0.1), transparent); border-radius: 12px; border-left: 2px solid #FBBF24;">
+                    <span style="font-weight: 600; color: #FBBF24;">Est. Monthly Cost</span>
+                    <span style="color:#FBBF24; font-weight:800; font-size: 18px;">$<?= money_fmt($total_users * $monthly_rate) ?></span>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Recent Users Table -->
-    <div class="premium-card">
+    <div class="premium-card delay-4">
         <div class="flex-between" style="margin-bottom: 20px;">
             <div class="flex-center">
-                <div class="stat-icon-box" style="width: 32px; height: 32px; border-radius: 50%; font-size: 16px; background: rgba(255,255,255,0.05); color: #FFF;">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <h3 style="font-size: 16px;">Recent Users</h3>
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(165, 180, 252, 0.1); color: #A5B4FC;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <h3 style="font-size: 18px;">Recent Users</h3>
             </div>
-            <a href="?page=reseller_users" class="action-btn btn-small">View All &rarr;</a>
+            <a href="?page=reseller_users" class="action-btn btn-small">View All →</a>
         </div>
         
         <div style="overflow-x: auto;">
             <table>
                 <thead>
                     <tr>
-                        <th style="padding-left: 0;">EMAIL</th>
-                        <th>PROFILE</th>
-                        <th>EXPIRES</th>
-                        <th style="text-align: right; padding-right: 0;">STATUS</th>
+                        <th>Email</th>
+                        <th>Profile</th>
+                        <th>Expires</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -381,15 +369,63 @@ $announcements = get_announcements($pdo, 'reseller');
                         }
                     ?>
                     <tr>
-                        <td style="font-weight: 500; padding-left: 0; color: #FFF;"><?= e($u['email']) ?></td>
+                        <td style="font-weight: 500; color: #fff;"><?= e($u['email']) ?></td>
                         <td class="text-muted"><?= e($u['product_profile'] ?: 'N/A') ?></td>
                         <td class="text-muted"><?= e($u['expires_at'] ?: 'N/A') ?></td>
-                        <td style="text-align: right; padding-right: 0;"><span class="status-badge <?= $status_class ?>" style="border:none; padding:4px 10px;"><?= $status_text ?></span></td>
+                        <td><span class="status-badge <?= $status_class ?>"><?= $status_text ?></span></td>
                     </tr>
                     <?php endforeach; ?>
                     <?php if(empty($recent_users)): ?>
                     <tr>
                         <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">No users found.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Transactions Table -->
+    <div class="premium-card delay-4">
+        <div class="flex-between" style="margin-bottom: 20px;">
+            <div class="flex-center">
+                <div class="stat-icon" style="width: 36px; height: 36px; font-size: 18px; background: rgba(96, 165, 250, 0.1); color: #60A5FA;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M16 16h.01"/></svg></div>
+                <h3 style="font-size: 18px;">Recent Transactions</h3>
+            </div>
+            <a href="?page=reseller_billing" class="action-btn btn-small">View All →</a>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($recent_transactions as $t): ?>
+                    <tr>
+                        <td class="text-muted"><?= e(date('M j, Y • H:i', strtotime($t['created_at']))) ?></td>
+                        <td>
+                            <span class="status-badge <?= 
+                                $t['type'] === 'payment' ? 'b-glow-green' : 
+                                ($t['type'] === 'charge' ? 'b-glow-yellow' : 'b-glow-blue') 
+                            ?>">
+                                <?= e(ucfirst($t['type'])) ?>
+                            </span>
+                        </td>
+                        <td class="text-muted"><?= e($t['description']) ?></td>
+                        <td style="text-align: right; font-weight: 700; color:<?= $t['type'] === 'payment' ? '#4ADE80' : '#F87171' ?>">
+                            <?= $t['type'] === 'payment' ? '+' : '-' ?> $<?= money_fmt($t['amount']) ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if(empty($recent_transactions)): ?>
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">No recent transactions.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>
