@@ -772,7 +772,8 @@ $announcements = get_announcements($pdo, 'reseller');
     margin-bottom: 24px;
 }
 .md-stat-box {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;
     background: #8e80d4;
     border-radius: 12px;
     padding: 12px;
@@ -782,7 +783,7 @@ $announcements = get_announcements($pdo, 'reseller');
 }
 .md-stat-box-1 { background: #887bbb; }
 .md-stat-box-2 { background: #6e58b8; }
-.md-stat-box-3 { background: #bbaae1; color: #333; }
+.md-stat-box-3 { background: #bbaae1; color: white; }
 
 .md-stat-icon { font-size: 18px; margin-bottom: 10px; }
 .md-stat-bottom { text-align: right; }
